@@ -1,0 +1,35 @@
+<a class="waves-effect ringbell-header-item workflow_need_approve" href="/signing-details?code={{item.params.code}}">
+    <i class="fas fa-code-branch"></i>
+    <div class="content">
+        <div>
+            <span  >
+                <span>{{'Signature WF'|l}}</span>&nbsp;
+                <span class="title">[{{item.params.code}}]&nbsp;{{item.params.title}}</span>&nbsp;
+                <span class="text-lowercase">{{'CreatedBy'|l}}</span>&nbsp;
+                <show-username-onlyname username="item.params.username_creator" without-tooltip="true">
+                </show-username-onlyname>
+            </span>
+        </div>
+        <div class="action" ng-switch="item.params.action">
+            <span ng-switch-when="process">
+                <i class="fas fa-book"></i>&nbsp;{{'Need you to review and record it in the official document registry'|l}}
+            </span>
+            <span ng-switch-when="all">
+                <i class="fas fa-signature"></i>&nbsp;{{'Need you to approve'|l}}
+            </span>
+            <span ng-switch-when="one">
+                <i class="fas fa-signature"></i>&nbsp;{{'Need you to approve'|l}}
+            </span>
+
+        </div>
+        <div>
+            <small class="grey-text">
+                <i class="fa fa-clock" aria-hidden="true"></i>
+                <time-show time-show-type="long" time-show-data="item.notify_time">
+                </time-show>
+            </small>
+        </div>
+
+    </div>
+
+</a>

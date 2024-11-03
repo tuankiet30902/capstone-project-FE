@@ -1,0 +1,277 @@
+<my-content>
+  <content-content>
+    <div ng-controller="dispatch_arrived_controller as ctrl" class="office-da-feature">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <button-new
+              button-new-func="ctrl.prepareInsert()"
+              button-new-label="{{'New'|l}}"
+              button-new-modal="#modal_DA_Insert"
+            >
+            </button-new>
+          </div>
+          <more-option-bar>
+            <bar-content class="row">
+              <div class="col-md-6 form-group">
+                <button-select
+                  button-select-label="{{'Display'|l}}"
+                  button-select-data="[15,30,50,100]"
+                  button-select-disabled="$root.statusValue.get(ctrl._ctrlName,'DA','load','doing')"
+                  button-select-func="ctrl.chooseNumberItem(params)"
+                  button-select-model="ctrl.numOfItemPerPage"
+                >
+                </button-select>
+              </div>
+              <div class="form-group col-md-6">
+                <pick-modal-directory
+                  extend="ctrl.KindOfDispatchTo_Config"
+                  pick-func="ctrl.pickDAT(params)"
+                  id-value="ctrl._filterDAT"
+                  label="{{'DispatchArrivedType'|l}}"
+                  disable="$root.statusValue.get(ctrl._ctrlName,'DA','load','doing')"
+                ></pick-modal-directory>
+              </div>
+              <div class="form-group col-md-6">
+                <pick-modal-directory
+                extend="ctrl.IncommingDispatchBook_Config"
+                pick-func="ctrl.pickDAB(params)"
+                id-value="ctrl._filterDAB"
+                label="{{'DispatchArrivedBook'|l}}"
+                disable="$root.statusValue.get(ctrl._ctrlName,'DA','load','doing')"
+              ></pick-modal-directory>
+              </div>
+              <div class="form-group col-md-6">
+                <pick-modal-directory
+                extend="ctrl.IncommingDispatchPririoty_Config"
+                pick-func="ctrl.choosePriority(params)"
+                id-value="ctrl._filterPriority"
+                label="{{'EmergencyLevel'|l}}"
+                disable="$root.statusValue.get(ctrl._ctrlName,'DA','load','doing')"
+              ></pick-modal-directory>
+              </div>
+              <div class="form-group col-md-6">
+                <pick-modal-directory
+                extend="ctrl.MethodOfSendingDispatchTo_Config"
+                pick-func="ctrl.chooseReceiveMethod(params)"
+                id-value="ctrl._filterReceiveMethod"
+                label="{{'ReceiveMethod'|l}}"
+                disable="$root.statusValue.get(ctrl._ctrlName,'DA','load','doing')"
+              ></pick-modal-directory>
+              </div>
+            </bar-content>
+          </more-option-bar>
+
+          <button-search
+            button-search-func="ctrl.refreshData()"
+            button-search-start="ctrl._notyetInit"
+            button-search-model="ctrl._searchByKeyToFilterData"
+          >
+          </button-search>
+          <ul class="nav nav-tabs" role="tablist">
+            <!-- <li class="nav-item" ng-click="ctrl.switchTab('created')">
+              <a class="nav-link" ng-class="{'active':ctrl.tab =='created'}"
+                >{{'Created'|l}}
+              </a>
+            </li> -->
+            <li class="nav-item" ng-click="ctrl.switchTab('need_to_handle')">
+              <a
+                class="nav-link"
+                ng-class="{'active':ctrl.tab =='need_to_handle', 'text-warning':ctrl.numberPending>0}"
+                >{{'NeedToHandle'|l}} ({{ctrl.numberPending}})</a
+              >
+            </li>
+            <!-- <li class="nav-item" ng-click="ctrl.switchTab('forwarded')">
+              <a
+                class="nav-link"
+                ng-class="{'active':ctrl.tab == 'forwarded'}"
+                >{{'Forwarded'|l}}
+              </a>
+            </li> -->
+            <li
+              class="nav-item"
+              ng-click="ctrl.switchTab('all')"
+              ng-show="['OfficeDA.Manager']|checkRule"
+            >
+              <a class="nav-link" ng-class="{'active':ctrl.tab =='all'}"
+                >{{'All'|l}}</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade active show">
+              <my-Async
+                async-ctrlname="{{ctrl._ctrlName}}"
+                async-objname="DA"
+                async-actionname="load"
+              >
+                <async-success>
+                  <div class="table-responsive">
+                    <table class="table table-sm" id="daReport">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th style="width:160px">
+                            {{'ArrivedDate'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="event">
+                            </order>
+                          </th>
+                          <th class="text-center">{{'NumberCodeDocument'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="code">
+                            </order>
+                          </th>
+                          <th class="text-center">{{'DispatchArrivedNumber'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="number">
+                            </order>
+                          </th>
+                          <th class="text-center">{{'TypeDocumentAndExcerpt'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="excerpt">
+                            </order>
+                          </th>
+                          <th class="text-center">{{'ReceivingUnit'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="department">
+                            </order>
+                          </th>
+                          <th class="text-center">{{'Status'|l}}
+                            <order 
+                              order-func="ctrl.refreshData()"
+                              order-model="ctrl.sort"
+                              order-name="status">
+                            </order>
+                          </th>
+                          <th style="width: 150px;">
+                            <div>                                
+                                <a type="button" style="border: 1px solid green; padding: 0.5px 2px;" class="btn-outline-primary" ng-click="ctrl.exportDAReport()">
+                                    <i style="color: green; font-size: 12px;" class="fas fa-file-excel"></i>
+                                </a>
+                            </div>
+                          </th>
+                        </tr>
+
+                      </thead>
+                      <tbody>
+                        <tr
+                          ng-repeat="item in ctrl.dispatch_arriveds"
+                          ng-class="{'alert-warning':(item.expiration_date|da_expiration_date)}"
+                        >
+                          <td>
+                            <strong> {{$index +1}}</strong>
+                          </td>
+                          <td>
+                            <span class="float-left"
+                                ><i class="fa fa-clock" aria-hidden="true"></i>
+                                <time-show
+                                  time-show-type="long"
+                                  time-show-data="item.event[0].time"
+                                  bind-object="true"
+                                >
+                                </time-show>
+                            </span>
+                          </td>
+                          <td class="text-center">
+                            <div class="text-muted text-nowrap">
+                              <a
+                                class="text-dark"
+                                href="/da-details?{{item._id}}"
+                              >
+                                {{item.code}}
+                              </a>
+                              </div>
+                          </td>
+                          <td class="text-center">
+                            <div>
+                              {{item.number}}
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <get-field-directory
+                                id-value="item.type"
+                                extend="ctrl.KindOfDispatchTo_Config"
+                                localization="true"
+                              ></get-field-directory>-
+                              {{item.excerpt}}
+                          </td>
+                          <td class="text-center">
+                            <div ng-repeat="d in item.view_only_departments">
+                              <show-department
+                                      department="d.department">
+                              </show-department><br>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <show-status id-value="item.status"></show-status>
+                          </td>
+                          <td>
+                            <button-edit-item
+                              ng-hide="item.employee !== $root.logininfo.data.employee
+                                      || item.username !== $root.logininfo.data.username"
+                              button-edit-item-modal="#modal_DA_Update"
+                              button-edit-item-func="ctrl.prepareUpdate(params)"
+                              button-edit-item-params="item"
+                            >
+                            </button-edit-item>
+                            <button-delete-item
+                              ng-hide="
+                                                         item.employee !== $root.logininfo.data.employee
+                                                        || item.username !== $root.logininfo.data.username
+                                                        "
+                              button-delete-item-modal="#modal_DA_Delete"
+                              button-delete-item-func="ctrl.prepareDelete(params)"
+                              button-delete-item-params="item"
+                            >
+                            </button-delete-item>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    ng-if="ctrl.dispatch_arriveds.length ==0"
+                    class="no-data"
+                  >
+                    {{'NoData'|l}}
+                  </div>
+                  <pagination
+                    pagination-ctrlname="{{ctrl._ctrlName}}"
+                    pagination-objname="DA"
+                    pagination-actionname="count"
+                    pagination-currentpage="ctrl.currentPage"
+                    pagination-noi="ctrl.numOfItemPerPage"
+                    pagination-total="ctrl.totalItems"
+                    pagination-func="ctrl.load(params)"
+                  ></pagination>
+                </async-success>
+              </my-Async>
+            </div>
+          </div>
+          <div ng-include="ctrl._urlInsertModal"></div>
+          <div ng-include="ctrl._urlDeleteModal"></div>
+          <div ng-include="ctrl._urlDeleteTaskModal"></div>
+          <task-insert-modal
+            target="department"
+            no-commit="true"
+            init-value="ctrl._task_update_value"
+            handle-success-func="ctrl.handleInsertTaskSuccess(params)"
+            
+          ></task-insert-modal>
+        </div>
+      </div>
+    </div>
+  </content-content>
+</my-content>

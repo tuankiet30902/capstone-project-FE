@@ -1,0 +1,23 @@
+<a class="waves-effect ringbell-header-item da_department_accept_dispatch_arrived"
+    href="/da-details?code={{item.params.code}}">
+    <i class="fas fa-exclamation"></i>
+    <div class="content">
+        <div>
+            <span>
+                <span class="department">{{item.params.department_title[$root.Language.current]}}</span>
+                <span >{{'refuse the processing of incoming official document'|l}}</span>
+                <span class="code">{{item.params.code}}</span>
+            </span>
+        </div>
+   
+        <div>
+            <small class="grey-text">
+                <i class="fa fa-clock" aria-hidden="true"></i>
+                <time-show time-show-type="long" time-show-data="item.notify_time">
+                </time-show>
+           </small>
+        </div>
+        
+    </div>
+
+</a>

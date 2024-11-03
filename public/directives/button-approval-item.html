@@ -1,0 +1,6 @@
+<button modal-toggle="{{buttonApprovalItemModal}}" type="button" class="btn btn-outline-success btn-sm"
+title="{{buttonApprovalItemTooltip|l}}"
+ng-click="buttonApprovalClick();$event.stopPropagation();" >
+    <i class="fas fa-check"></i>
+    <span ng-if="buttonLabel">{{buttonLabel | l}}</span>
+</button>

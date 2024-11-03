@@ -1,0 +1,36 @@
+<my-content class="meeting-room-feature">
+    <content-content>
+        <div class="card" ng-controller="meeting_room_controller as ctrl">
+           <div class="card-body">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" ng-click="ctrl.switchTab('Management')"
+                    ng-show="(['Office.MeetingRoomSchedule.register']|checkRule) ||
+                            (['Office.RoomSchedule.Manange']|checkRule) ||
+                            (['Office.RoomSchedule.ApprovalDepartment']|checkRule) ||
+                            (['Office.LectureHallClassroom.Confirm']|checkRule) ||
+                            (['Office.MeetingRoomSchedule.Approval']|checkRule) ||
+                            (['Office.MeetingRoomSchedule.Confirm']|checkRule) ||
+                            (['Office.RoomSchedule.Manange']|checkRule) ||
+                            (['Office.RoomSchedule.RequestCancel']|checkRule)"                
+                >
+                    <a class="nav-link" ng-class="{'active': ctrl.tab == 'Management'}">{{'MeetingRoomSchedule' | l}}</a>
+                </li>
+                <li class="nav-item" ng-click="ctrl.switchTab('list')" ng-show="['Office.MeetingRoom.Use']|checkRule">
+                    <a class="nav-link" ng-class="{'active': ctrl.tab == 'list'}">{{'MeetingRoom' | l}}</a>
+                </li>
+                <li class="nav-item" ng-click="ctrl.switchTab('Calendar')" 
+                    ng-show="(['Office.MeetingRoomSchedule.Use']|checkRule)"
+                    >
+                    <a class="nav-link" ng-class="{'active': ctrl.tab == 'Calendar'}">{{'MeetingRoomScheduleConferenceRoom' | l}}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade active show">
+                  <div ng-include="ctrl._urlContent"></div>
+                </div>
+              </div>  
+           </div> 
+          
+        </div>
+    </content-content>
+</my-content>

@@ -1,0 +1,189 @@
+<style>
+    .modal-footer .btn-outline-danger{
+        font-size: .9rem !important;
+        padding: 6px 12px !important;
+    }
+</style>
+<div class="modal fade" tabindex="-1" role="dialog" id="notify_approve_modal">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <modal-header modal-header-title="{{'ApproveForm'|l}}"></modal-header>
+            <div class="modal-body">
+                <form class="form-horizontal " name="approveForm">
+                    <div class="card">
+                        <div class="card-body row" style="border-left:2px solid #20a8d8">
+                            <div class="form-group col-md-12" style="margin: 0;">
+                                <label class="input-group-text-new mb-0"><strong>{{'Title' | l}}:</strong></label>
+                                <span>{{ctrlChild._approve_value_news.title}}</span>
+                            </div>
+                            <div class="form-group col-md-12 py-1" style="margin: 0;" ng-if="ctrlChild._approve_value_news.recall_reason">
+                                <label class="input-group-text-new mb-0"><strong>{{'RecallReason' | l}}:</strong></label>
+                                <span style="color: red;">{{ctrlChild._approve_value_news.recall_reason}}</span>
+                            </div>
+                            <div class="form-group col-md-12" style="margin: 0;">
+                                <label class="input-group-text-new mb-0"><strong>{{'CreatedBy'|l}}</strong>:</label>
+                                <show-username hide-image="true" username="ctrlChild._approve_value_news.username"></show-username>
+                            </div>
+                            <div class="form-group col-md-12" style="margin: 0;">
+                                <label class="input-group-text-new mb-0"><strong>{{'CreatedFrom'|l}}</strong>:</label>
+                                <show-department style="font-weight: 600; color: dodgerblue;" department="ctrlChild._approve_value_news.department"></show-department>
+                            </div>
+                            <div class="form-group col-md-12 pt-1 pb-0" style="margin: 0;">
+                                <label class="input-group-text-new mb-0"><strong>{{'NewsType' | l}}</strong>:</label>
+                                <span>{{ctrlChild._approve_value_news.group | l}}</span>
+                            </div>
+                            <div class="form-group col-md-12" style="margin: 0;">
+                                <label class="input-group-text-new mb-0">
+                                    <strong>{{'SendTo' | l}}
+                                        <span ng-if="ctrlChild._approve_value_news.type === 'Department'">({{'Department'|l}})</span>
+                                        <span ng-if="ctrlChild._approve_value_news.type === 'Employee'">({{'Employee'|l}})</span>
+                                    </strong>:
+                                </label>
+                                <ng-container ng-switch="ctrlChild._approve_value_news.type">        
+                                    <span class="capitalize-first" ng-switch-when="WholeSchool">
+                                        {{(ctrlChild._approve_value_news.type | l | lowercase)}}
+                                    </span>                         
+                                    <span ng-switch-when="Department" class="capitalize-first" ng-repeat="item in ctrlChild._approve_value_news.to_department track by $index" style="font-weight: 600; color: dodgerblue;">
+                                        <show-department department="item"></show-department>
+                                        <span ng-if="!$last">,&nbsp;</span>
+                                    </span>
+                                    <span ng-switch-when="Employee" ng-repeat="item in ctrlChild._approve_value_news.to_employee track by $index">
+                                        <show-username username="item" hide-image="true"></show-username>
+                                        <span ng-if="!$last">,&nbsp;</span>
+                                    </span>
+                                </ng-container>
+                            </div>
+
+
+                            <!-- <div class="input-group-new disabled">
+                                <div class="input-group-prepend-new col-md-12">
+                                    <span class="input-group-text-new">{{'SendTo' | l}}:</span>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button-radio
+                                            button-radio-params="ctrlChild.notify_type_config"
+                                            button-radio-model="ctrlChild._approve_value_news.type"
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <div class="row col-md-12" ng-if="ctrlChild._approve_value_news.type==='Employee'">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <pick-user-multi
+                                                disable="true"
+                                                label="{{'Employee'|l}}"
+                                                id-value="ctrlChild._approve_value_news.to_employee"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="row col-md-12" ng-if="ctrlChild._approve_value_news.type==='Department'">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <organization-multi
+                                                disable="true"
+                                                label="{{'Department'|l}}"
+                                                id-value="ctrlChild._approve_value_news.to_department"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0" style="border-left:2px solid #20a8d8">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="input-group-text-new"><strong>{{'Content' | l}}</strong>:</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div ng-bind-html="ctrlChild._approve_value_news.content"></div>
+                                </div>
+                                <div
+                                    class="col-md-12"
+                                    style="border-top:1px solid #eee;margin-bottom:15px;margin-top:10px;"
+                                >
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6" style="border-right: 1px solid #eee;">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                            <tr>
+                                                <td>&num;</td>
+                                                <td colspan="2">
+                                                    <strong>{{'Attachment' | l}}</strong>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="item in ctrlChild._approve_value_news.files">
+                                                <td>{{$index + 1}}</td>
+                                                <td>
+                                                    <attachment-just-show my-item="item"/>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                     
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body-row py-2" style="border-left:2px solid #20a8d8">
+                            <div class="col-md-12">
+                                <div class="input-group-new">
+                                  <div class="input-group-prepend-new">
+                                    <label class="input-group-text-new" style="color: black;"><strong>{{'Note'|l}}</strong>:</label>
+                                  </div>
+                                  <div class="form-group mb-0">
+                                    <text-area-with-suggestions
+                                        ng-model="ctrlChild._approve_value_news.note"
+                                        placeholder="{{'You can note for approval'|l}}"
+                                    />
+                                  </div>
+                                  <div>
+                                    <span 
+                                      class="badge badge-light m-1" 
+                                      style="cursor: pointer; font-size: 0.8rem; font-weight: 400;"
+                                      ng-repeat="hint in ctrlChild._hintNoteSet"
+                                      ng-click="ctrlChild.set_hint_note_new(hint)"
+                                    > 
+                                      {{hint|l}}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <modal-button-approval
+                    modal-button-approval-ctrlname="{{ctrlChild._ctrlName}}"
+                    modal-button-approval-objname="News"
+                    modal-button-approval-actionname="approve"
+                    modal-button-approval-invalid="approveForm.$invalid"
+                    modal-button-approval-func="ctrlChild.approve_news()"
+                    modal-button-confirm-text="{{ctrlChild._approve_value_news.allowApprove_recall ? 'ApproveRecallRequestForThisNotify' : 'AreYouSureYouApproveThisNotify'}}"
+                    modal-button-approval-label="{{ctrlChild._approve_value_news.allowApprove_recall ? ('ApproveRecall'|l) : null}}"
+                />
+                <button-reject-item
+                    button-reject-item-modal="#notify_reject_modal"
+                    button-reject-item-func="ctrlChild.prepareReject_news(params)"
+                    button-reject-item-params="ctrlChild._approve_value_news"
+                    button-label="{{ctrlChild._approve_value_news.allowApprove_recall ? ('RejectRecall') : ('Reject')}}"
+                ></button-reject-item>
+                <modal-button-close/>
+            </div>
+        </div>
+    </div>
+</div>

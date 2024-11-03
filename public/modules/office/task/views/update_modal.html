@@ -1,0 +1,430 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_Task_Update">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <modal-header modal-header-title="{{'Update'|l}}"></modal-header>
+            <div class="modal-body">
+                <form class="form-horizontal " name="updateForm">
+                    <div class="row part">
+                        <div class="form-group col-md-12">
+                            <div class="input-prepend input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">{{'Title'|l}}</span><span style="color: red;">*</span>
+                                </div>
+                                <input ng-disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                    type="text" ng-model="ctrlChild._update_value.title" class="form-control"
+                                    name="update_title" placeholder="{{'InputTitle'|l}}"
+                                    ng-class="{ 'is-invalid': updateForm.update_title.$invalid }" 
+                                    required
+                                     />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-prepend input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{{'Status'|l}}</span>
+                                </div>
+                                <div class="form-control" style="height: 32px; background-color: #fff;">
+                                    <show-status-in-update id-value="ctrlChild._update_value.status"></show-status-in-update>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_department_controller'"
+                                    require="true"
+                                    label="{{'HostPerson'|l}}"
+                                    id-department="ctrlChild.currentDepartment.id"
+                                    pick-func="ctrlChild.pickMainperson_update(params)"
+                                    id-value="ctrlChild._update_value.main_person[0]">   
+                                </select-users-by-department>
+                                <select-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_personal_controller'"
+                                    require="true"
+                                    label="{{'HostPerson'|l}}"
+                                    id-department="ctrlChild.tasks_assigned[0].department"
+                                    pick-func="ctrlChild.pickMainperson_update(params)"
+                                    id-value="ctrlChild._update_value.main_person[0]">   
+                                </select-users-by-department>
+                                <pick-user-from-data ng-if="ctrlChild.currentProject" label="{{'HostPerson'|l}}"
+                                                     id-value="ctrlChild._update_value.main_person"
+                                                     data="ctrlChild.currentProject.participant"
+                                                     disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                                     pick-func="ctrlChild.pickMainperson_update(params)"
+                                ></pick-user-from-data>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select-multi-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_department_controller'"
+                                    label="{{'Coordinator'|l}}"
+                                    require="true"
+                                    id-department="ctrlChild.currentDepartment.id"
+                                    pick-func="ctrlChild.pickParticipant_update(params)"
+                                    id-value="ctrlChild._update_value.participant">
+                                </select-multi-users-by-department>
+
+                                <select-multi-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_personal_controller'"
+                                    label="{{'Coordinator'|l}}"
+                                    require="true"
+                                    id-department="ctrlChild.tasks_assigned[0].department"
+                                    pick-func="ctrlChild.pickParticipant_update(params)"
+                                    id-value="ctrlChild._update_value.participant">
+                                </select-multi-users-by-department>
+
+                                <pick-user-from-data-multi ng-if="ctrlChild.currentProject" label="{{'Coordinator'|l}}"
+                                    id-value="ctrlChild._update_value.participant"
+                                    data="ctrlChild.currentProject.participant"
+                                    disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                    pick-func="ctrlChild.pickParticipant_update(params)"></pick-user-from-data-multi>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select-multi-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_department_controller'"
+                                    label="{{'Observer'|l}}"
+                                    require="true"
+                                    id-department="ctrlChild.currentDepartment.id"
+                                    pick-func="ctrlChild.pickObserver_update(params)"
+                                    id-value="ctrlChild._update_value.observer">
+                                </select-multi-users-by-department>
+
+                                <select-multi-users-by-department
+                                    ng-if="ctrlChild._ctrlName === 'task_personal_controller'"
+                                    label="{{'Observer'|l}}"
+                                    require="true"
+                                    id-department="ctrlChild.tasks_assigned[0].department"
+                                    pick-func="ctrlChild.pickObserver_update(params)"
+                                    id-value="ctrlChild._update_value.observer">
+                                </select-multi-users-by-department>
+
+                                <pick-user-from-data-multi ng-if="ctrlChild.currentProject" label="{{'Observer'|l}}"
+                                    id-value="ctrlChild._update_value.observer"
+                                    data="ctrlChild.currentProject.participant"
+                                    disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                    pick-func="ctrlChild.pickObserver_update(params)"></pick-user-from-data-multi>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <pick-modal-directory
+                                    extend="ctrlChild.TaskPriority"
+                                    pick-func="ctrlChild.pickPriorityUpdate(params)"
+                                    id-value="ctrlChild._update_value.priority"
+                                    label="{{'Priority'|l}}"
+                                    require="true"
+                                    required
+                                    >
+                                </pick-modal-directory>
+                            </div>
+                            <div class="form-group">
+                                <pick-modal-directory
+                                    extend="ctrlChild.TaskType"
+                                    pick-func="ctrlChild.pickTaskTypeUpdate(params)"
+                                    id-value="ctrlChild._update_value.task_type"
+                                    label="{{'TaskType'|l}}"
+                                    require="false"
+                                    ng-class="{'disabled': ctrlChild.workflow_plays.length > 0 || ctrlChild.notify_detail !== null }">
+                                </pick-modal-directory>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <date id-value="ctrlChild._update_value.from_date"
+                                  func="ctrlChild.chooseFromDate_update(params)" label="{{'FromDate'|l}}"
+                                  disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                  require="true"
+                                  required
+                                  >
+                            </date>
+                            <div class="errorMsg" ng-show="ctrlChild.fromDate_ErrorMsg">{{ ctrlChild.fromDate_ErrorMsg }}</div>
+                          </div>
+                          <div class="col-md-6 form-group">
+                            <div class="d-flex align-content-start flex-wrap">
+                              <date id-value="ctrlChild._update_value.to_date"
+                                    func="ctrlChild.chooseToDate_update(params)" label="{{'ToDate'|l}}"
+                                    disabled="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                    require="true" 
+                                    required
+                                    endday="true">
+                              </date>
+                              <show-duration from-date="ctrlChild._update_value.from_date" to-date="ctrlChild._update_value.to_date"></show-duration>
+                            </div>
+                            <div class="errorMsg" ng-show="ctrlChild.toDate_ErrorMsg">{{ ctrlChild.toDate_ErrorMsg }}</div>
+                          </div>
+                        <div class="form-group col-md-12">
+                            <input type="checkbox" id="isRepetitiveTask" ng-model="ctrlChild._update_value.has_repetitive" />
+                            <label class="ml-1 form-check-label" for="isRepetitiveTask">
+                                {{ctrlChild._update_value.has_repetitive ? ('WorkIsRepeatedCyclically'|l) : ('IsRepetitiveTask'|l)}}
+                            </label>
+                        </div>
+                        
+                        <div class="form-group col-md-12" ng-if="ctrlChild._update_value.has_repetitive">
+                            <div class="d-flex align-items-start" style="width: 60%; flex-wrap: nowrap;">
+                                <!-- Repeat every X -->
+                                <div class="input-prepend input-group" style="flex-basis: 30%; margin-right: 15px;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{'RepeatEach'|l:({amount:''})}}</span>
+                                    </div>
+                                    <input
+                                        ng-disabled="false"
+                                        type="number" ng-model="ctrlChild._update_value.per" class="form-control"
+                                        name="update_per" min="0" step="any"/>
+                                </div>
+                                
+                                <!-- Repeat cycle (day/week/month/year) -->
+                                <div class="input-prepend input-group" style="flex-basis: 30%;">
+                                    <select class="form-control" style="height: 32px;" name="update_cycle" ng-model="ctrlChild._update_value.cycle" enabled="true">
+                                        <option value="day">{{'Day'|l}}</option>
+                                        <option value="week">{{'Week'|l}}</option>
+                                        <option value="month">{{'Month'|l}}</option>
+                                        <option value="year">{{'Year'|l}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        
+                            <!-- End date -->
+                            <div class="container" style="margin-top:10px;margin-left:-5px;line-height:23px;">
+                                <div class="label" style="color: #000000;font-weight: 700;font-size: 100%;">
+                                    {{'End'|l}}
+                                </div>
+                                <button-radio-basic
+                                    button-radio-name="has_endDate_update"
+                                    button-radio-params="[{ label: 'Never', val: false },{ label: 'OnDay', val: true }]"
+                                    button-radio-model="ctrlChild._update_value.has_expired"
+                                    is-localization="true"
+                                    button-radio-func="ctrlChild.chooseHasEndDateRepetitive_update(params)"
+                                    button-radio-disabled="false">
+                                </button-radio-basic>
+                                
+                                <!-- End date picker -->
+                                <date id-value="ctrlChild._update_value.expired_date"
+                                    func="ctrlChild.chooseEndDate_update(params)" label=""
+                                    enable="true">
+                                </date>
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group col-md-12">
+                            <pick-modal-advance-multi
+                                    label="{{'Label'|l}}" require="false"
+                                    disable="$root.statusValue.get(ctrlChild._ctrlName,'Task','update','doing')"
+                                    load-data-func="ctrlChild.loadLabel(params)"
+                                    id-value="ctrlChild._update_value.label"
+                                    load-details-func="ctrlChild.loadLabel_details(params)"
+                                    localized="false"
+                                    pick-func="ctrlChild.pickLabel_update(params)"
+                                    enable-insert-new-item="true"
+                                    insert-item-func="ctrlChild.insertLabel(params)">
+                            </pick-modal-advance-multi>
+                        </div>
+                    </div>
+                    <div class="row part">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea id="updateTask_content" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div ng-if="ctrlChild._update_value.attachment.length ==0" class="no-data">
+                                {{'NoAttachment'|l}}
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr ng-repeat="item in ctrlChild._update_value.attachment">
+                                            <td>{{$index+1}}</td>
+                                            <td>
+                                                <attachment-just-show my-item="item"></attachment-just-show>
+                                            </td>
+                                            <td><i class="fas fa-times text-danger" ng-click="ctrlChild.removeFile_update(item)"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="diskuf-selector-table wd-fa-add-file-light-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="diskuf-selector wd-fa-add-file-light-cell wd-fa-add-file-from-main" colspan=" 0">
+                                            <div class="diskuf-uploader">
+                                                <span class="wd-fa-add-file-light">
+                                                    <span class="wd-fa-add-file-light-text">
+                                                        <span class="wd-fa-add-file-light-title">
+                                                            <span class="wd-fa-add-file-light-title-text">{{'UploadFile'|l}}</span>
+                                                        </span>
+                                                        <span class="wd-fa-add-file-light-descript">{{'DragTheFileHereToUpload'|l}}</span>
+                                                    </span>
+                                                </span>
+                                                <input class="diskuf-fileUploader wd-test-file-light-inp " type="file" file-reading
+                                                    file-func="ctrlChild.pushFile_update(params)" size="1" style="width:100%;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-12 my-2">
+                            <div
+                                class="my-1"
+                                ng-show="ctrlChild.workflow_plays.length === 0 && ctrlChild._update_value.task_type === 'WorkflowPlay'"
+                            >
+                                <button-new
+                                    button-new-label="{{'Create new Workflow play'|l}}"
+                                    button-new-modal="#modal_WFP_Insert"
+                                />
+                            </div>
+                            <div
+                                class="my-1"
+                                ng-if="['Office.Notify.Use']|checkRule"
+                                ng-show="ctrlChild.notify_detail === null && ctrlChild._update_value.task_type === 'Notification'"
+                            >
+                                <button-new
+                                    button-new-label="{{'TaskAddNewNotification'|l}}"
+                                    button-new-modal="#notify_insert_modal"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="WFP-task col-md-12" ng-show="ctrlChild.workflow_plays.length > 0">
+                            <div class="table-responsive">
+                                <div class="title">{{'WorkflowPlay' | l}}</div>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr ng-repeat="item in ctrlChild.workflow_plays">
+                                            <td>
+                                                <small><span class="grey-text float-left"><i class="fa fa-clock" aria-hidden="true"></i>
+                                                        <time-show time-show-type="short" time-show-data="item.event[0].time">
+                                                        </time-show>
+                                                    </span></small>
+                                            </td>
+                                            <td>
+                                                <show-username username="item.username" employee="item.employee">
+                                                </show-username>
+                                            </td>
+                                            <td style="width: 35%">
+                                                <a class="text-dark" href="/signing-details?code={{item.code}}" target="_blank">{{item.title}}</a>
+                                                <div class="showfile-bar" ng-if="item.attachment.length>0">
+                                                    <attachment-show ng-repeat="at in item.attachment" attachment-show-item="at"
+                                                        attachment-show-func="ctrlChild.loadfileWFP(params)"
+                                                        attachment-show-params="{id:item._id,name:at.name}"
+                                                        attachment-show-service-name="'workflow_play'">
+                                                    </attachment-show>
+                                                </div>
+                                                <div class="showfile-bar" ng-if="item.customTemplate">
+                                                    <attachment-show attachment-show-item="item.customTemplate"
+                                                        attachment-show-func="ctrlChild.loadfileWFP(params)"
+                                                        attachment-show-params="{id:item._id,name:item.customTemplate.name}"
+                                                        attachment-show-service-name="'workflow_play'">
+                                                    </attachment-show>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <show-status id-value="item.status"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="WFP-task col-md-12" ng-show="ctrlChild.notify_detail !== null">
+                            <div class="table-responsive">
+                                <div class="title">{{'Notify' | l}}</div>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <small>
+                                                    <span class="grey-text float-left">
+                                                        <i class="fa fa-clock" aria-hidden="true"></i>
+                                                        <time-show
+                                                            time-show-type="short"
+                                                            time-show-data="ctrlChild.notify_detail.events[0].time"
+                                                        />
+                                                    </span>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <show-username username="ctrlChild.notify_detail.username"/>
+                                            </td>
+                                            <td style="width: 35%" >
+                                                <a
+                                                    class="text-dark"
+                                                    link-details
+                                                    link-details-display="{{ctrlChild.notify_detail.title}}"
+                                                    link-details-url="/notify-details?{{ctrlChild.notify_detail._id}}"
+                                                    link-details-route="notify-details"
+                                                    link-details-func="ctrlChild.reloadModalBox(params)"
+                                                >
+                                                    {{ctrlChild.notify_detail.title}}
+                                                </a>
+                                                <div class="showfile-bar"
+                                                     ng-if="ctrlChild.notify_detail.attachment && ctrlChild.notify_detail.attachment.length > 0">
+                                                    <attachment-show
+                                                        ng-repeat="at in ctrlChild.notify_detail.attachment"
+                                                        attachment-show-item="at"
+                                                        attachment-show-func="ctrlChild.load_notify_file(params)"
+                                                        attachment-show-params="{id: ctrlChild.notify_detail._id, name: at.name}"
+                                                        attachment-show-service-name="'notify'"
+                                                    >
+                                                    </attachment-show>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <show-status id-value="ctrlChild.notify_detail.status"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" >
+                            <div class="checklist-container" style="margin-top: 10px;">
+                                <div class="title">
+                                    <div>
+                                        {{'CheckListofTask'|l}} ({{ctrlChild._update_value.task_list.length}})
+                                    </div>
+                                    <button-new button-new-func="ctrlChild.addCheckList_update()" button-new-label="{{'AddCheckList'|l}}">
+                                    </button-new>
+                                </div>
+                                <div class="content">
+                                    <div class="item" ng-repeat="item in ctrlChild._update_value.task_list">
+                                        <div class="input-checkbox" ng-class="{'checked':item.status}">
+                                            <label class="container-checkbox-1">
+                                                <input type="checkbox" checked="checked" ng-model="item.status">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="input-text">
+                                            <input type="text" ng-model="item.title" placeholder="{{'InputCheckListName'|l}}"
+                                                ng-enter="ctrlChild.addCheckList_update()"
+                                                focus-me="item.id == ctrlChild._update_value.focusChecklist" />
+                                        </div>
+                                        <div class="remove-icon">
+                                            <i class="fas fa-times" ng-click="ctrlChild.removeCheckList_update(item.id)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <modal-button-save modal-button-save-ctrlname="{{ctrlChild._ctrlName}}"
+                    modal-button-save-objname="Task"
+                    modal-button-save-actionname="update"
+                    modal-button-save-invalid="ctrlChild.toDate_ErrorMsg || ctrlChild.fromDate_ErrorMsg || ctrlChild._update_value.status === 'Cancelled'"
+                    modal-button-save-func="ctrlChild.update()">
+                </modal-button-save>
+                <modal-button-close></modal-button-close>
+            </div>
+        </div>
+    </div>
+</div>

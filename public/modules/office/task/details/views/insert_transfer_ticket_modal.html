@@ -1,0 +1,256 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_TranferTicket_Insert">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <modal-header modal-header-title="Thêm phiếu chuyển"></modal-header>
+            <div class="modal-body">
+                <form class="form-horizontal " name="insertForm">
+                    <div class="row part">
+                        <div class="form-group col-md-12">
+                            <i class="grey-text" ng-if="ctrl._parentID">{{'ParentTask'|l}}:
+                                {{ctrl._parentTitle}}</i>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-prepend input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">{{'Title'|l}}</span>
+                                </div>
+                                <input ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')"
+                                    type="text" ng-model="ctrl._insert_value.title" class="form-control"
+                                    name="insert_title" placeholder="{{'InputTitle'|l}}"
+                                    ng-class="{ 'is-invalid': insertForm.insert_title.$invalid }" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <date id-value="ctrl._insert_value.from_date"
+                                func="ctrl.chooseFromDate_insert(params)" label="{{'FromDate'|l}}"
+                                disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')"
+                                required="true"></date>
+                                <div class="errorMsg" ng-show="ctrl.fromDate_ErrorMsg">{{ ctrl.fromDate_ErrorMsg }}</div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <date id-value="ctrl._insert_value.to_date"
+                                func="ctrl.chooseToDate_insert(params)" label="{{'ToDate'|l}}"
+                                disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')"
+                                required="true" endday="true"></date>
+                                <div class="errorMsg" ng-show="ctrl.toDate_ErrorMsg">{{ ctrl.toDate_ErrorMsg }}</div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <organization
+                                label="{{'Department'|l}}"
+                                id-value="ctrl._insert_value.department"
+                                select-func="ctrl.chooseDepartment(params)"
+                                excludes="[ctrl.Item.department]"
+                                require="true"
+                            >
+                            </organization>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <pick-modal-directory 
+                                    extend="ctrl.TaskPriority" 
+                                    pick-func="ctrl.choosePriority(params)"
+                                    id-value="ctrl._filterPriority" 
+                                    label="{{'Priority'|l}}"
+                                    require="true">
+                                </pick-modal-directory>
+                            </div>
+                            <div class="form-group">
+                                <pick-modal-directory 
+                                    extend="ctrl.TaskType" 
+                                    pick-func="ctrl.chooseTaskType(params)"
+                                    id-value="ctrl._filterTaskType" 
+                                    label="Loại công việc"
+                                    require="false">
+                                </pick-modal-directory>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row part">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea id="insertTransferTicket_content" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="checklist-container" style="margin-top: 20px;">
+                                <div class="title">
+                                    <div>
+                                        {{'CheckListofTask'|l}} ({{ctrl._insert_value.task_list.length}})
+                                    </div>
+                                    <button-new button-new-func="ctrl.addCheckList_insert()"
+                                        button-new-label="{{'AddCheckList'|l}}">
+                                    </button-new>
+                                </div>
+                                <div class="content">
+                                    <div class="item" ng-repeat="item in ctrl._insert_value.task_list">
+                                        <div class="input-checkbox" ng-class="{'checked':item.status}">
+                                            <label class="container-checkbox-1">
+                                                <input type="checkbox" checked="checked" ng-model="item.status">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="input-text">
+                                            <input type="text" ng-model="item.title" 
+                                            placeholder="{{'InputCheckListName'|l}}" 
+                                            ng-enter="ctrl.addCheckList_insert()"
+                                            focus-me="item.id == ctrl._insert_value.focusChecklist"
+                                            />
+                                        </div>
+                                        <div class="remove-icon">
+                                            <i class="fas fa-times" ng-click="ctrl.removeCheckList_insert(item.id)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row part">
+                        <div class="col-md-12" style="margin-top:12px;">
+                            <div style="color: #4285f4;font-weight: 700; font-size: 12px;">
+                                <div>
+                                    Nội dung phiếu chuyển
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:12px;">
+                            <div class="input-group-new">
+                                <div class="input-group-prepend-new">
+                                    <span class="input-group-text-new">Tên trích yếu của Phiếu chuyển</span>
+                                    <span class="require-sympton">*</span>
+                                </div>
+                                <input ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')" type="text"
+                                    ng-model="ctrl._insert_value.transfer_ticket_values.title" class="form-control"
+                                    name="insert_title_transferTicket" placeholder="Nhập vào đây"
+                                    ng-class="{ 'is-invalid': forms.insertForm.insert_title_transferTicket.$invalid }" required />
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-12" style="margin-top:10px;">
+                            <div class="input-group-new">
+                                <div class="input-group-prepend-new">
+                                    <span class="input-group-text-new">Cơ sở, pháp lý liên quan, văn bản cấp trên liên quan</span>
+                                    <span class="require-sympton">*</span>
+                                </div>
+                                <input ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')" type="text"
+                                    ng-model="ctrl._insert_value.transfer_ticket_values.base" class="form-control" name="insert_base"
+                                    placeholder="Nhập vào đây" ng-class="{ 'is-invalid': forms.insertForm.insert_base.$invalid }"
+                                    required />
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-12" style="margin-top:10px;">
+                            <div class="input-group-new">
+                                <div class="input-group-prepend-new">
+                                    <span class="input-group-text-new">Văn bản đề nghị thực hiện, kế hoạch</span>
+                                    <span class="require-sympton">*</span>
+                                </div>
+                                <input ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')" type="text"
+                                    ng-model="ctrl._insert_value.transfer_ticket_values.perform" class="form-control" name="insert_perform"
+                                    placeholder="Nhập vào đây" ng-class="{ 'is-invalid': forms.insertForm.insert_perform.$invalid }"
+                                    required />
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-12" style="margin-top:10px;">
+                            <div class="input-group-new">
+                                <div class="input-group-prepend-new">
+                                    <span class="input-group-text-new">Nội dung phiếu chuyển</span>
+                                    <span class="require-sympton">*</span>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="" class="form-control" required
+                                        ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')"
+                                        ng-model="ctrl._insert_value.transfer_ticket_values.content"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12" style="margin-top:4px;">
+                            <div class="input-group-new">
+                                <div class="input-group-prepend-new">
+                                    <span class="input-group-text-new">Nơi nhận</span>
+                                    <span class="require-sympton">*</span>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="" class="form-control" style="height: 75px;" required
+                                        ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Task','insert','doing')"
+                                        ng-model="ctrl._insert_value.transfer_ticket_values.recipient"></textarea>
+                                </div>
+                            </div>
+                        
+                        <div class="col-md-12" style="margin-top:8px;">
+                            <div class="mb-3 text-center">
+                                <button type="button" class="btn btn-outline-primary" ng-click="ctrl.transferTicketTemplatePreview()"
+                                    ng-disabled="insertForm.$invalid || ctrl.fromDate_ErrorMsg || ctrl.toDate_ErrorMsg">{{'Preview'|l}}</button>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+
+                    <div class="row part">
+                        <div class="col-md-6">
+                            <div ng-if="ctrl._insert_value.files.length ==0" class="no-data">
+                                {{'NoAttachment'|l}}
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+
+                                    <tbody>
+                                        <tr ng-repeat="item in ctrl._insert_value.files">
+                                            <td>{{$index+1}}</td>
+                                            <td>
+                                                <attachment-just-show my-item="item"></attachment-just-show>
+                                            </td>
+                                            <td><i class="fas fa-times text-danger"
+                                                    ng-click="ctrl.removeFile_insert(item)"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="diskuf-selector-table wd-fa-add-file-light-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="diskuf-selector wd-fa-add-file-light-cell wd-fa-add-file-from-main"
+                                            colspan=" 0">
+                                            <div class="diskuf-uploader">
+                                                <span class="wd-fa-add-file-light">
+                                                    <span class="wd-fa-add-file-light-text">
+                                                        <span class="wd-fa-add-file-light-title">
+                                                            <span
+                                                                class="wd-fa-add-file-light-title-text">{{'UploadFile'|l}}</span>
+                                                        </span>
+                                                        <span
+                                                            class="wd-fa-add-file-light-descript">{{'DragTheFileHereToUpload'|l}}</span>
+                                                    </span>
+                                                </span>
+                                                <input class="diskuf-fileUploader wd-test-file-light-inp " type="file"
+                                                    file-reading="ctrl._insert_value.files" size="1" multiple
+                                                    style="width:100%;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <modal-button-new modal-button-new-ctrlname="{{ctrl._ctrlName}}" 
+                    modal-button-new-objname="Task"
+                    modal-button-new-actionname="insert" 
+                    modal-button-new-invalid="insertForm.$invalid || ctrl.fromDate_ErrorMsg || ctrl.toDate_ErrorMsg"
+                    modal-button-new-func="ctrl.insert_transferTicket()">
+                </modal-button-new>
+                <modal-button-close></modal-button-close>
+            </div>
+        </div>
+    </div>
+</div>

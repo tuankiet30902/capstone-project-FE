@@ -1,0 +1,114 @@
+<my-content class="notify-details-feature">
+    <content-content ng-class="{'card ':!$root.detailsInfo.url}">
+        <div ng-controller="notify_details_controller as ctrl" ng-class="{'card-body':!$root.detailsInfo.url}">
+            <div>
+                <section class="pb-3">
+                    <!-- Post data -->
+                    <div class=" text-center post-data">
+                        <h2><a><strong>{{ctrl.Item.title}}</strong></a></h2>
+                        <p class="grey-text">{{'WrittenBy'|l}}
+                            <a>
+                                <show-username username="ctrl.Item.username">
+                                </show-username>
+                            </a>, <time-show time-show-data="(ctrl.Item.entity.his[0].created)"></time-show>
+                        </p>
+                        <div>
+                            <!-- <span class="badge pink">
+                                <get-field-directory id-value="ctrl.Item.group" extend="ctrl.NotifyGroup_Config"
+                                    localization="true"></get-field-directory>
+                            </span> -->
+                            <span class="badge pink" ng-if="ctrl.Item.type === 'Employee'">
+                                {{'Employee'|l}}
+                            </span>
+                            <span class="badge pink" ng-if="ctrl.Item.type === 'Department'">
+                                {{'Department'|l}}
+                            </span>
+                            <span class="badge pink" ng-if="ctrl.Item.type === 'WholeSchool'">
+                                {{ctrl.Item.type | l}}
+                            </span>
+                            <show-status id-value="ctrl.Item.status"></show-status>
+                        </div>
+                        <div class="social-counters ">
+
+                            <!-- Facebook -->
+                            <a class="btn badge-info waves-effect waves-light" style="cursor: default">
+                                <i class="far fa-eye"></i>
+                                <span class="hidden-md-down ">{{'Views'|l}}</span>
+                            </a>
+                            <span class="counter ">{{ctrl.Item.view}}</span>
+
+                            <!-- Twitter -->
+                            <a class="btn badge-primary waves-effect waves-light" style="cursor: default">
+                                <i class="far fa-user"></i>
+                                <span class="hidden-md-down ">{{'Viewers'|l}}</span>
+                            </a>
+                            <span class="counter ">{{ctrl.Item.watched.length}}</span>
+
+                            <!-- Comments -->
+                            <a class="btn btn-pink  waves-effect waves-light" style="color: #fff;"
+                                ng-click="ctrl.like(ctrl.Item.like.indexOf($root.logininfo.username)===-1)">
+                                <i ng-if="ctrl.Item.like.indexOf($root.logininfo.username)===-1 "
+                                    class="far fa-heart"></i>
+                                <i ng-if="ctrl.Item.like.indexOf($root.logininfo.username)!==-1 "
+                                    class="fas fa-heart"></i>
+                                <span class="hidden-md-down ">{{'Love'|l}}</span>
+                            </a>
+                            <span class="counter ">{{ctrl.Item.like.length}}</span>
+
+                        </div>
+                    </div>
+                    <!-- Post data -->
+
+                    <p ng-bind-html="ctrl.Item.content"></p>
+
+                </section>
+
+                <section class="pb-3">
+                    <p class="note note-primary attachment" ng-show="ctrl.Item.attachments.length>0">
+                        <strong>{{"Attachment"|l}}:</strong>
+
+                        <attachment-show ng-repeat="at in ctrl.Item.attachments" attachment-show-item="at"
+                            attachment-show-func="ctrl.load_file_info(params)"
+                            attachment-show-params="{id:ctrl.Item._id,name:at.name}"
+                            attachment-show-service-name="'notify'">
+                        </attachment-show>
+                    </p>
+                </section>
+            </div>
+            <div class="comments-list text-center text-md-left">
+
+                <h4 class="text-center font-weight-bold mb-5 grey-text">{{'Events'|l}} <span
+                        class="badge pink">{{ctrl.Item.event.length}}</span></h4>
+
+                <!-- First row -->
+               
+                <table class="table event-table">
+                <thead>
+                    <tr>
+                    <th style=" text-align: center;">{{'Time'|l}}</th>
+                    <th style=" text-align: center">{{'PersonAction'|l}}</th>
+                    <th style=" text-align: center">{{'Action'|l}}</th>
+                    <th style=" text-align: center; max-width: 200px;">{{'Note'|l}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in ctrl.Item.event|orderBy:'time':-1">
+                    <td class="hour" style=" text-align: center;">
+                        <span class="grey-text"
+                        ><i class="fa fa-clock" aria-hidden="true"></i>
+                        <time-show time-show-data="item.time"></time-show>
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <show-username username="item.username"> </show-username>
+                    </td>
+                    <td style="text-align: center;">{{item.action|l}}</td>
+                    <td style="text-align: center; max-width: 200px;">{{item.note}}</td>
+                    </tr>
+                </tbody>
+                </table>
+
+            </div>
+        </div>
+    </content-content>
+</my-content>

@@ -1,0 +1,388 @@
+<div id="meeting_room_permision">
+    <div class="main-permission">
+        <ul>
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Cấp quyền để thấy tính năng lịch phòng trên menu
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.MeetingRoomSchedule.Use'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.MeetingRoomSchedule.Use'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Cấp quyền sử dụng tính năng đăng ký lịch phòng
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.MeetingRoomSchedule.register'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.MeetingRoomSchedule.register'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Được phê duyệt yêu cầu cấp phòng họp cấp đơn vị <i class="small">({{'This is the right reserved for department leaders'|l}}.)</i>
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'Not allow'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].value"
+                                       brige-func="ctrl.updateRule(params)"
+                                       brige-value="'Office.RoomSchedule.ApprovalDepartment'" value="None" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For department is working'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].value"
+                                       value="Working" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'All departments'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].value"
+                                       value="All" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For specific departments'|l}}
+                                <organization-multi  label="{{''}}"
+                                                     id-value="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].department"
+                                                     select-func="ctrl.update_Department_Permission(params)"
+                                                     my-params="'Office.RoomSchedule.ApprovalDepartment'"
+                                                     disable="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].value!='Specific'">
+                                </organization-multi>
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ApprovalDepartment'].value"
+                                       value="Specific" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Nhận thông báo thuộc về phòng ban
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'Not allow'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].value"
+                                       brige-func="ctrl.updateRule(params)"
+                                       brige-value="'Office.MeetingRoom.NotifyDepartment'" value="None" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For department is working'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].value"
+                                       value="Working" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'All departments'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].value"
+                                       value="All" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For specific departments'|l}}
+                                <organization-multi  label="{{''}}"
+                                                     id-value="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].department"
+                                                     select-func="ctrl.update_Department_Permission(params)"
+                                                     my-params="'Office.MeetingRoom.NotifyDepartment'"
+                                                     disable="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].value!='Specific'">
+                                </organization-multi>
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.MeetingRoom.NotifyDepartment'].value"
+                                       value="Specific" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Cấp quyền sử dụng tính năng quản lý danh sách phòng <i class="small">(Dùng để khai báo, quản lý danh mục phòng)</i>
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.MeetingRoom.Use'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.MeetingRoom.Use'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Quyền xác nhận cho phòng họp
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.MeetingRoomSchedule.Confirm'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.MeetingRoomSchedule.Confirm'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Quyền xác nhận cho giảng đường, phòng học
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.LectureHallClassroom.Confirm'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.LectureHallClassroom.Confirm'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Quyền phê duyệt cấp lãnh đạo cho phòng họp
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.MeetingRoomSchedule.Approval'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.MeetingRoomSchedule.Approval'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Quyền phê duyệt cấp lãnh đạo cho giảng đường, phòng học
+                    </div>
+                    <div class="tool">
+                        <input type="checkbox" ng-model="ctrl.rule['Office.LectureHallClassroom.Approval'].value" brige-func="ctrl.updateRule(params)" brige-value="'Office.LectureHallClassroom.Approval'"/>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item">
+                    <div class="label">
+                        Cho phép quản lý thông tin đăng ký lịch phòng của đơn vị <i class="small">(Ngoài những lịch phòng mà bản thân tham gia, thì có thể quản lý thông tin đăng ký của đơn vị dựa trên quyền này)</i>
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'Not allow'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.Manange'].value"
+                                       brige-func="ctrl.updateRule(params)"
+                                       brige-value="'Office.RoomSchedule.Manange'" value="None" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For department is working'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.Manange'].value"
+                                       value="Working" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'All departments'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.Manange'].value"
+                                       value="All" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For specific departments'|l}}
+                                <organization-multi  label="{{''}}"
+                                                     id-value="ctrl.rule['Office.RoomSchedule.Manange'].department"
+                                                     select-func="ctrl.update_Department_Permission(params)"
+                                                     my-params="'Office.RoomSchedule.Manange'"
+                                                     disable="ctrl.rule['Office.RoomSchedule.Manange'].value!='Specific'">
+                                </organization-multi>
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.Manange'].value"
+                                       value="Specific" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- <li>
+                <div class="item">
+                    <div class="label">
+                        Được quyền yêu cầu hủy
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'Not allow'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.RequestCancel'].value"
+                                       brige-func="ctrl.updateRule(params)"
+                                       brige-value="'Office.RoomSchedule.RequestCancel'" value="None" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For department is working'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.RequestCancel'].value"
+                                       value="Working" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'All departments'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.RequestCancel'].value"
+                                       value="All" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For specific departments'|l}}
+                                <organization-multi  label="{{''}}"
+                                                     id-value="ctrl.rule['Office.RoomSchedule.RequestCancel'].department"
+                                                     select-func="ctrl.update_Department_Permission(params)"
+                                                     my-params="'Office.RoomSchedule.RequestCancel'"
+                                                     disable="ctrl.rule['Office.RoomSchedule.RequestCancel'].value!='Specific'">
+                                </organization-multi>
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.RequestCancel'].value"
+                                       value="Specific" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li> -->
+
+            <!-- <li>
+                <div class="item">
+                    <div class="label">
+                        Quyền tiếp nhận thông tin ỏ cấp đơn vị
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'Not allow'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].value"
+                                       brige-func="ctrl.updateRule(params)"
+                                       brige-value="'Office.RoomSchedule.ReceiveInformarion'" value="None" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For department is working'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].value"
+                                       value="Working" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'All departments'|l}}
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].value"
+                                       value="All" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <div class="label">
+                                {{'For specific departments'|l}}
+                                <organization-multi  label="{{''}}"
+                                                     id-value="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].department"
+                                                     select-func="ctrl.update_Department_Permission(params)"
+                                                     my-params="'Office.RoomSchedule.ReceiveInformarion'"
+                                                     disable="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].value!='Specific'">
+                                </organization-multi>
+                            </div>
+                            <div class="tool">
+                                <input type="radio" ng-model="ctrl.rule['Office.RoomSchedule.ReceiveInformarion'].value"
+                                       value="Specific" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li> -->
+
+        </ul>
+    </div>
+</div>

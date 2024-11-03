@@ -1,0 +1,227 @@
+<style>
+  .calendar-container {
+    display: grid;
+    grid-template-columns: repeat(7, 250px);
+    font-family: Arial, sans-serif;
+    width: 100%;
+    font-size: 0.8rem;
+  }
+  .calendar-item {
+    border: 1px solid rgb(218, 220, 224);
+    min-height: 130px;
+  }
+
+</style>
+
+<div ng-controller="event_calendar_controller as ctrlCalendar">
+  <div style="overflow: hidden; box-sizing: border-box">
+    <div class="mt-4 mb-4">
+      <span class="checkbox_personally_involved" ng-if="ctrlCalendar.show_checkbox_personally_involved">
+        <input
+          type="checkbox"
+          ng-model="ctrlCalendar.checkbox_personally_involved"
+          ng-change="ctrlCalendar.load_calendar()"
+        />&nbsp;{{'My calendar'|l}}&nbsp;
+      </span>
+
+      <span class="checkbox_created" ng-if="ctrlCalendar.show_checkbox_created">
+        <input
+          type="checkbox"
+          ng-model="ctrlCalendar.checkbox_created"
+          ng-change="ctrlCalendar.load_calendar()"
+        />&nbsp;{{'EventCreated'|l}}&nbsp;&nbsp;</span>
+      <span ng-if="ctrlCalendar.show_checkbox_level_1">
+        <input type="checkbox" 
+              ng-model="ctrlCalendar.checkbox_level_1"
+              ng-change="ctrlCalendar.load_calendar()" />&nbsp;{{'Level_1'|l}}&nbsp;&nbsp;
+      </span>
+      <span ng-if="ctrlCalendar.show_checkbox_level_2">
+          <input type="checkbox" 
+                ng-model="ctrlCalendar.checkbox_level_2"
+                ng-change="ctrlCalendar.load_calendar()" />&nbsp;{{'Level_2'|l}}&nbsp;&nbsp;
+      </span>
+
+      <span class="checkbox_responsibility" ng-if="ctrlCalendar.show_checkbox_responsibility">
+        <input
+          type="checkbox"
+          ng-model="ctrlCalendar.checkbox_responsibility"
+          ng-change="ctrlCalendar.load_calendar()"
+        />&nbsp;{{'EventResponsibleUnit'|l}}&nbsp;&nbsp;
+      </span>
+
+      <span class="checkbox_manage" ng-if="ctrlCalendar.show_checkbox_manage">
+        <input
+          type="checkbox"
+          ng-model="ctrlCalendar.checkbox_manage"
+          ng-change="ctrlCalendar.load_calendar()"
+        />&nbsp;{{'ManageExternal'|l}}&nbsp;&nbsp;
+      </span>
+      
+      <i
+        class="far fa-question-circle"
+        custom-tooltip
+        tooltip-content="{{'Default is only display task of departments youre leading'|l}}"
+      ></i>
+      <hr />
+    </div>
+    <div class="form-group row align-items-start">
+      <div class="event-filter-item col-md-2">
+        <div class="title-filter" style="color: #a3a3a3; margin-bottom: 5px">
+          {{'FromDate' | l}}
+        </div>
+        <div class="value mt-2" style="display: flex; align-items: center">
+          <input
+            type="date"
+            ng-model="ctrlCalendar.start_date_filter"
+            ng-change="ctrlCalendar.load_calendar()()"
+            style="
+              border: none;
+              outline: none;
+              background: transparent;
+              font-size: 14px;
+            "
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="title-filter" style="color: #a3a3a3; margin-bottom: 5px">
+          {{'NumdayShow' | l}}
+        </div>
+        <select
+          ng-change="ctrlCalendar.load_calendar()"
+          ng-model="ctrlCalendar.numDays"
+          class="form-control p-0"
+        >
+          <option value="7">7</option>
+          <option value="15">15</option>
+          <option value="30">30</option>
+        </select>
+      </div>
+      <div class="ml-auto">
+
+        <button
+          class="btn btn-success "
+          ng-if="ctrlCalendar.show_export"
+          ng-click="ctrlCalendar.export_excel()"
+        >
+          <i class="fas fa-file-excel"></i>
+          <!-- Excel file icon -->
+          {{'ExportToExcel' | l}}
+        </button>
+        <button
+          class="btn btn-success "
+          ng-if="ctrlCalendar.show_export"
+          ng-click="ctrlCalendar.export_excel_manage()"
+        >
+          <i class="fas fa-file-excel"></i>
+          <!-- Excel file icon -->
+          {{'ExportToExcelManage' | l}}
+        </button>
+      </div>
+      
+    </div>
+    
+   
+    
+
+<table class="table-schedule" border="1" cellspacing="0" cellpadding="5" style="overflow-x: auto; width: 100%; text-align: center;">
+  <thead>
+    <tr style="background-color: #007bff; color: black">
+      <th colspan="{{ 3 + ctrlCalendar.calendarDates.length }}" class="text-center">
+        {{'EventCalendar' | l}}
+      </th>
+    </tr>
+    <tr>
+      <th rowspan="2">STT</th>
+      <th rowspan="2">
+        {{'Day' | l}}
+      </th>
+      <th rowspan="2">
+        {{'StartTime' | l}}
+      </th>
+      <th rowspan="2">
+        {{'Content' | l}}
+      </th>
+      <th rowspan="2">
+        {{'HostPerson' | l}}
+      </th>
+      <th rowspan="2">
+        {{'AddressEvent' | l}}
+      </th>
+      <th rowspan="2">
+        {{'Participants' | l}}
+      </th>
+      <th rowspan="2">
+        {{'ContentPreparationUnit' | l}}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in ctrlCalendar.calendarDates">
+      <td>{{item.index}}</td>
+      <td ng-if="!item.event">
+        {{item.weekDay|l}}
+        <div>
+          <span
+            style="
+              font-weight: 600;
+              color: rgb(60, 64, 67);
+              font-size: 1rem;
+              height: 24px;
+            "
+          >
+            {{item.day}}
+          </span>
+        </div>
+      </td>
+      <td ng-if="item.event && item.colspan" rowspan="{{item.colspan}}">
+        {{item.weekDay|l}}
+        <div>
+          <span
+            style="
+              font-weight: 600;
+              color: rgb(60, 64, 67);
+              font-size: 1rem;
+              height: 24px;
+            "
+          >
+            {{item.day}}
+          </span>
+        </div>
+      </td>
+      <td>
+        <time-show time-show-data="item.event.start_date"  time-show-type="justtime" />
+      </td>
+      <td>{{ item.event.content }}</td>
+      <td>
+        <show-username-onlyname
+            hide-image="true"
+            username="item.event.main_person"
+        />
+      </td>
+      <td>
+        <span ng-if="item.event.type === 'Online'">
+          {{item.event.meeting_link}}
+        </span>
+        <span ng-if="item.event.type === 'OfflineOffSite'">
+          {{item.event.vehicle_registration.destination}}
+        </span>
+
+        <span ng-if="item.event.type === 'OfflineOnSite'">
+          <get-field-directory localization="true" id-value="item.event.meeting_room_registration.room" extend="ctrlCalendar.room_list_config" />
+        </span>
+
+      </td>
+      <td style="text-wrap: wrap;">
+        <span ng-repeat="e in item.event.participants track by $index">
+          <show-username-onlyname username="e" hide-image="true" /></show-username-onlyname>,
+        </span>
+      </td>
+      <td>{{item.event.department_title[ctrlCalendar.$languageValue.current]}}</td>
+    </tr>
+  </tbody>
+</table>
+
+      
+  </div>
+</div>

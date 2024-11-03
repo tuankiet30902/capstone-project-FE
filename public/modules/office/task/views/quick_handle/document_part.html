@@ -1,0 +1,112 @@
+<div class="task-part" ng-hide="!ctrlChild._searchFilter_document 
+&& ctrlChild.totalItems_document ===0">
+    <div class="title" id="headingDocument">
+        <div style="display: inline-block;" class="label" ng-click="ctrlChild.toogleCollapseDocument()" class="btn btn-link"
+            data-toggle="collapse" data-target="#collapseDocument" aria-expanded="true"
+            aria-controls="collapseDocument" style="font-style: bold;">
+            <i class="fas fa-angle-down" ng-show="ctrlChild.collapseDocument"></i><i class="fas fa-angle-right"
+            ng-show="!ctrlChild.collapseDocument"></i>&nbsp;&nbsp;<label>{{'DispatchArrived'|l}}&nbsp;(<span>{{ctrlChild.totalItems_document}}</span>)</label>&nbsp;&nbsp;
+        </div>
+        <div style="display: inline-block;" ng-hide="ctrlChild.collapseDocument === false">
+            <span class="overdue">
+                <input type="checkbox" ng-model="ctrlChild.checkbox_needtohandle_document"
+                    ng-change="ctrlChild.refreshData_document()" />&nbsp;{{'NeedToHandle'|l}}
+            </span>&nbsp;&nbsp;
+            <span class="gonnalate">
+                <input type="checkbox" ng-model="ctrlChild.checkbox_gonnalate_document"
+                    ng-change="ctrlChild.refreshData_document()" />&nbsp;{{'GonnaLate'|l}}
+            </span>
+        </div>
+    </div>
+    <div id="collapseDocument" class="collapse" ng-class="{'show':ctrlChild.collapseDocument}" aria-labelledby="headingDocument">
+    <div class="the-content">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover" ng-class="{'no-data':ctrlChild.documents.length ===0}">
+                <thead>
+                    <tr>
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center; width: 30px;">#</td>
+                        <td style="font-weight: 600;color: #212529;vertical-align: middle; text-align: center; width: 100px;">
+                            {{'ArrivedDate'|l}}</td>
+                        <td style="font-weight: 600;color: #212529;vertical-align: middle; text-align: center; width: 80px;">{{'DispatchArrivedNumber'|l}}</td>
+                        <td>{{'PlaceOfDispatchArrived'|l}}</td>
+                        <td>{{'NumberCodeDocument'|l}}</td>
+                        <td class="tool">
+                            <div class="search" style="margin-bottom: 5px;">
+                                <input type="text" ng-model="ctrlChild._searchFilter_document" my-watch-text-input
+                                    my-scope="ctrlChild._searchFilter_document"
+                                    my-func="ctrlChild.refreshData_document()"
+                                    my-start="!ctrlChild._notyetInit_document"
+                                    placeholder="{{'Find task by name and code'|l}}">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div style="color: #212529; font-weight: 600;">
+                                {{'TypeDocumentAndExcerpt'|l}}
+                            </div>
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center; width: 100px;">
+                            {{'State'|l}}
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center; width: 160px;">
+                            {{'Processing time'|l}}</td>
+
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in ctrlChild.documents track by $index">
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center;">
+                            <strong> {{$index +1}}</strong>
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center; width: 100px;">
+                            <time-show time-show-type="justdate" time-show-data="item.event[0].time" bind-object="true">
+                            </time-show>
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle; text-align: center; width: 80px;">
+                            {{item.number}}
+                        </td>
+                        <td>{{item.agency_promulgate}}</td>
+                        <td><strong>{{item.code}}</strong></td>
+                        <td>
+                            <a class="text-dark" link-details link-details-display="{{'['+item.code+'] '+item.title}}"
+                                link-details-url="/da-details?code={{item.code}}"
+                                link-details-route="da-details">{{item.excerpt}}</a>
+                            <div class="showfile-bar" ng-if="item.attachment.length>0">
+                                <attachment-show ng-repeat="at in item.attachment" attachment-show-item="at"
+                                    attachment-show-func="ctrlChild.loadfile_document(params)"
+                                    attachment-show-params="{id:item._id,name:at.name}"
+                                    attachment-show-service-name="'da'">
+                                </attachment-show>
+                            </div>
+                            <div class="showfile-bar" ng-if="item.customTemplate">
+                                <attachment-show attachment-show-item="item.customTemplate"
+                                    attachment-show-func="ctrlChild.loadfile_document(params)"
+                                    attachment-show-params="{id:item._id,name:item.customTemplate.name}"
+                                    attachment-show-service-name="'da'">
+                                </attachment-show>
+                            </div>
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle;text-align: center;width: 100px;">
+                            {{item.status|l}}
+                        </td>
+                        <td style="font-weight: 600;vertical-align: middle;text-align: center;width: 160px;">
+                            <time-show time-show-data="item.to_date" time-show-type="long"></time-show>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-if="ctrlChild.documents.length ==0" class="no-data">
+            {{'NoData'|l}}
+        </div>
+        <pagination ng-show="ctrlChild.totalItems_document>0" pagination-ctrlname="{{ctrlChild._ctrlName}}"
+            pagination-objname="DispatchArrived" pagination-actionname="count"
+            pagination-currentpage="ctrlChild.currentPage_document" pagination-noi="ctrlChild.numOfItemPerPage"
+            pagination-total="ctrlChild.totalItems_document" pagination-func="ctrlChild.load_document(params)">
+        </pagination>
+    </div>
+    </div>
+</div>

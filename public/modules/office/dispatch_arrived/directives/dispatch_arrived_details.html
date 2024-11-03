@@ -1,0 +1,258 @@
+<div>
+    <section class="pb-3" ng-show="ctrl.Item._id">
+        <div class="card">
+            <div class="card-body row pt-2 pb-3" style="border-left: 2px solid #20a8d8">
+                <div class="col-md-12">
+                    <div style="width: 100%">
+                        <h5>
+                            <small class="grey-text"
+                            ><i>
+                                <get-field-directory
+                            id-value="ctrl.Item.type"
+                            extend="ctrl.KindOfDispatchTo_Config"
+                            localization="true"
+                          ></get-field-directory></i
+                          >&nbsp;</small>
+                            <a><strong>{{ctrl.Item.excerpt}}</strong></a>
+                        </h5>
+                        <p class="grey-text">
+                            {{'WrittenBy'|l}}
+                            <a><strong>
+                                <show-department
+                                department="ctrl.Item.department">
+                                </show-department> </strong></a>,
+                            <time-show time-show-data="ctrl.Item.event[0].time" time-show-type="long">
+                            </time-show>
+                        </p>
+                    </div>
+                    <div>
+                        <show-status id-value="ctrl.Item.status"></show-status>
+                    </div>
+                </div>
+                <!-- divider -->
+                <div class="col-md-12" style="border-top: 1px solid #eee; margin-top: 10px;"></div>
+                <!-- da_book -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'DispatchArrivedBook'|l}}:&nbsp;<i>
+                        <get-field-directory id-value="ctrl.Item.da_book" extend="ctrl.IncommingDispatchBook_Config"
+                            localization="true"></get-field-directory>
+                    </i>
+                </div>
+                <!-- number -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'DispatchArrivedNumber'|l}}:&nbsp;<i>{{ctrl.Item.number}}</i>
+                </div>
+                <!-- release_date -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'DateMonthYearDocument'|l}}:&nbsp;<i>
+                        <time-show time-show-data="ctrl.Item.release_date" time-show-type="justdate">
+                        </time-show>
+                    </i>
+                </div>
+                <!-- author -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'Author'|l}}:&nbsp;<i>{{ctrl.Item.author}}</i>
+                </div>
+                <!-- agency_promulgate -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'Agency promulgate'|l}}:&nbsp;<i>{{ctrl.Item.agency_promulgate}}</i>
+                </div>
+                <!-- transfer_date -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'Transfer date'|l}}:&nbsp;<i>
+                        <time-show time-show-data="ctrl.Item.transfer_date" time-show-type="justdate">
+                        </time-show>
+                    </i>
+                </div>
+                <!-- priority -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'EmergencyLevel'|l}}:&nbsp;<i>
+                        <get-field-directory id-value="ctrl.Item.priority"
+                            extend="ctrl.IncommingDispatchPririoty_Config" localization="true"></get-field-directory>
+                    </i>
+                </div>
+                <!-- is_legal -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'IsLegalDocument'|l}}:&nbsp;<i>{{ctrl.Item.is_legal?('Yes'|l):('No'|l)}}</i>
+                </div>
+                <!-- note -->
+                <div class="col-md-6" style="margin-top: 10px">
+                    -{{'Note'|l}}:&nbsp;<i>{{ctrl.Item.note}}</i>
+                </div>
+                <!-- divider -->
+                <div class="col-md-12" style="border-top: 1px solid #eee; margin-top: 10px;"></div>
+                <!-- attachments -->
+                <div class="col-md-12" style="margin-top: 10px" ng-if="ctrl.Item.attachments.length > 0">
+                    <div><strong>{{'Attachment'|l}}</strong></div>
+                    <div class="mt-2">
+                        <attachment-show ng-repeat="at in ctrl.Item.attachments" attachment-show-item="at"
+                            attachment-show-func="ctrl.loadfile(params)"
+                            attachment-show-params="{id:ctrl.Item._id,name:at.name}"
+                            attachment-show-service-name="'dispatch_arrived'">
+                        </attachment-show>
+                    </div>
+                </div>
+                <!-- divider -->
+                <div class="col-md-12" style="border-top: 1px solid #eee; margin-top: 10px;"></div>
+                <!-- view_only_departments -->
+                <div class="col-md-12 mt-3">
+                    <div><strong>{{'Department receives to know'|l}}</strong></div>
+                    <div class="text-muted mb-3" ng-if="!ctrl.Item.view_only_departments.length">
+                        <i>{{'No department receives to know'|l}}</i>
+                    </div>
+                    <div class="table-responsive" ng-if="ctrl.Item.view_only_departments.length">
+                        <table class="table table-sm">
+                            <thead>
+                                <th>#</th>
+                                <th>{{'Department'|l}}</th>
+                                <th>{{'Status'|l}}</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="department in ctrl.Item.view_only_departments">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{department.department.title[$root.Language.current]}}</td>
+                                    <td><show-status id-value="department.status"></show-status></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- tasks -->
+                <div class="col-md-12">
+                    <div><strong>{{'Resolving tasks'|l}}</strong></div>
+                    <div class="text-muted mb-3" ng-if="!ctrl.Item.tasks.length">
+                        <i>{{'No resolving tasks'|l}}</i>
+                    </div>
+                    <div class="table-responsive" ng-if="ctrl.Item.tasks.length">
+                        <table class="table table-sm">
+                            <thead>
+                                <th>#</th>
+                                <th>{{'Department'|l}}</th>
+                                <th>{{'Task summary'|l}}</th>
+                                <th>{{'FromDate'|l}}</th>
+                                <th>{{'ToDate'|l}}</th>
+                                <th>{{'PriorityLevel'|l}}</th>
+                                <th>{{'Status'|l}}</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="task in ctrl.Item.tasks track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{task.department.title[$root.Language.current]}}</td>
+                                    <td ng-repeat="task in ctrl.tasks">
+                                        <a ng-if="task.showLink" href="/task-details?code={{task.code}}">{{task.title}}</a>
+                                        <span ng-if="!task.showLink">{{task.title}}</span>
+                                    </td>
+                                    <td>
+                                        <time-show2 time-show-data="task.from_date" time-show-type="just_date">
+                                        </time-show2>
+                                    </td>
+                                    <td>
+                                        <time-show2 time-show-data="task.to_date" time-show-type="just_date">
+                                        </time-show2>
+                                    </td>
+                                    <td>
+                                        <show-priority id-value="task.priority">{{priority}}</show-priority>
+                                    </td>
+                                    <td>
+                                        <show-status id-value="task.status"></show-status>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- divider -->
+                <div class="col-md-12" ng-if="ctrl.Item.is_handler && ['Created', 'Rejected', 'WaitingForApproval', 'WaitingForReview'].includes(ctrl.Item.status)">
+                    <div style="border-top: 1px solid #eee; margin-top: 10px;"></div>
+                    <div class="pt-3 w-100 text-right">
+                        <button-update
+                            button-update-label="{{'Edit'|l}}"
+                            button-update-modal="#modal_DA_Dir_Update"
+                        ></button-update>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- transfer -->
+        <div class="card" ng-if="ctrl.Item.is_handler">
+            <div class="card-body row" style="border-left: 2px solid #20a8d8">
+                <div class="col-md-12">
+                    <div class="input-group-new">
+                        <div class="input-group-prepend-new">
+                            <span class="input-group-text-new">{{'Note'|l}}</span>
+                            <span class="require-sympton">*</span>
+                        </div>
+                        <div class="form-group">
+                            <text-area-with-suggestions
+                            ng-model="ctrl._forward_value.note"
+                            required="true"
+                            ></text-area-with-suggestions>
+                        </div>
+                    </div>
+                    <fieldset ng-disabled="!ctrl._forward_value.note.trim() || $root.statusValue.get(ctrl._ctrlName, 'DA', 'forward', 'doing') ">
+                        <div class="mb-3 w-100 text-right" ng-if="ctrl.Item.status === 'Created' || ctrl.Item.status === 'Rejected'">
+                            <button class="btn btn-primary" ng-click="ctrl.forwardToHeadOfDepartment()">{{'Forward to the head of the school office'|l}}</button>
+                        </div>
+                        <div class="mb-3 w-100 text-right" ng-if="ctrl.Item.status === 'WaitingForApproval'">
+                            <button class="btn btn-primary" ng-click="ctrl.forwardToBoardOfDirectors()">{{'Send to board of directors'|l}}</button>
+                            <button class="btn btn-primary ml-1" ng-click="ctrl.forwardToDepartments()">{{'Send to departments'|l}}</button>
+                        </div>
+                        <div class="mb-3 w-100 text-right" ng-if="ctrl.Item.status === 'WaitingForReview'">
+                            <button class="btn btn-primary" ng-click="ctrl.forwardToHeadOfDepartment()">{{'Forward to the head of the school office'|l}}</button>
+                            <button class="btn btn-primary ml-1" ng-click="ctrl.forwardToDepartments()">{{'Send to departments'|l}}</button>
+                        </div>
+                        <div class="mb-3 w-100 text-right" ng-if="ctrl.isWaitingForAccept()">
+                            <button class="btn btn-success" ng-click="ctrl.accept()"><i class="fas fa-check"></i> {{'Accept'|l}}</button>
+                            <button class="btn btn-warning ml-1" ng-click="ctrl.reject()"><i class="fas fa-ban"></i> {{'Reject'|l}}</button>
+                        </div>
+                        <div class="mb-3 w-100 text-right" ng-if="ctrl.isWaitingForRead()">
+                            <button class="btn btn-success" ng-click="ctrl.markAsRead()"><i class="fas fa-check"></i> {{'Mark as read'|l}}</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- event -->
+        <div class="card">
+            <div class="card-body row" style="border-left: 2px solid #20a8d8">
+                <div class="col-md-12">{{'Events'|l}}</div>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>{{'Time'|l}}</th>
+                                    <th>{{'FullName'|l}}</th>
+                                    <th>{{'Action'|l}}</th>
+                                    <th>{{'Note'|l}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in ctrl.Item.event">
+                                    <td class="hour">
+                                        <small><span class="grey-text float-left"><i class="fa fa-clock"
+                                                    aria-hidden="true"></i>
+                                                <time-show time-show-type="short" time-show-data="item.time">
+                                                </time-show> </span></small>
+                                    </td>
+                                    <td>
+                                        <show-username username="item.username">
+                                        </show-username>
+                                    </td>
+                                    <td>
+                                        {{item.action|l}}
+                                        <span ng-show="item.to.length>0">{{'to'|l}}:&nbsp;</span>
+                                        <show-username ng-repeat="t in item.to" username="t">
+                                        </show-username>
+                                    </td>
+                                    <td>{{item.note}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <dispatch-arrived-update item="ctrl.Item" handle-success-func="ctrl.handleUpdateSuccess()"></dispatch-arrived-update>
+</div>

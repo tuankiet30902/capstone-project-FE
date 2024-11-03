@@ -1,0 +1,118 @@
+<div  ng-controller="meeting_room_controller as ctrl">
+    <div >
+        <div class="form-group row align-items-center">
+            <div class="event-filter-item col-md-2">
+                <div class="title-filter" style="color: #a3a3a3; margin-bottom: 5px;">{{'FromDate' | l}}</div>
+                <div class="value" style="display: flex; align-items: center;">
+                    <input type="date" 
+                           ng-model="ctrl.weekDays[0].date"
+                           ng-change="ctrl.load_calendar_check_date()" 
+                           style="border: none; outline: none; background: transparent; font-size: 14px;" />
+                </div>
+            </div>
+            <div class="event-filter-item col-md-2">
+                <div class="title-filter" style="color: #a3a3a3; margin-bottom: 5px;">{{'ToDate' | l}}</div>
+                <div class="value" style="display: flex; align-items: center;">
+                    <input type="date" 
+                           ng-model="ctrl.weekDays[ctrl.weekDays.length - 1].date"
+                           ng-change="ctrl.load_calendar_check_date()" 
+                           style="border: none; outline: none; background: transparent; font-size: 14px;" />
+                </div>
+            </div>
+            <button ng-if="ctrl.show_export" class="btn btn-success ml-auto" ng-click="ctrl.export_excel()">
+                <i class="fas fa-file-excel"></i> <!-- Excel file icon -->
+                {{'ExportToExcel' | l}}
+            </button>            
+        </div>
+        <div class="mt-4 mb-4">          
+            <span class="is_get_all" ng-if="ctrl.show_calendar_checkbox_responsibility">
+                <input type="checkbox" ng-model="ctrl.calendar_checkbox_responsibility"
+                    ng-change="ctrl.load_calendar()" />&nbsp;{{'Responsible Department'|l}}
+            </span>&nbsp;&nbsp;
+            <span class="gonnalate" ng-if="ctrl.show_calendar_checkbox_created">
+              <input type="checkbox" ng-model="ctrl.calendar_checkbox_created"
+                ng-change="ctrl.load_calendar()" />&nbsp;{{'Created'|l}}&nbsp;&nbsp;
+            </span>
+
+            <span class="overdue" ng-repeat="type in ctrl._roomTypes">
+              <input
+                  type="checkbox" 
+                  ng-model="ctrl.calendar_checkbox_room_type[type.val]"
+                  ng-change="ctrl.load_calendar()"
+              />
+              &nbsp;{{type.label[ctrl.$languageValue.current]}}&nbsp;&nbsp;
+          </span>
+        </div>
+        <div class="table" style="overflow-x: auto;">
+            <table class="table table-bordered table-striped" style="overflow-x: auto;">
+                <thead>
+                    <!-- Merged header row -->
+                    <tr style="background-color: #007bff; color: white;">
+                        <th colspan="{{ 3 + ctrl.weekDays.length }}" class="text-center">
+                            {{'MeetingRoomScheduleConferenceRoom' | l}}
+                        </th>
+                    </tr>
+                    <!-- Original header row -->
+                    <tr style="background-color: #f2f2f2;">
+                        <th>#</th>
+                        <th style="width: 100px;">{{'RoomCode' | l}}</th>
+                        <th style="width: 200px;">{{'MeetingRoom' | l}}</th>
+                        <th ng-repeat="day in ctrl.weekDays" style="min-width: 200px;" >
+                            {{ day.dayKey | l }}<br>{{ day.date | date:'dd/MM' }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(index, room) in ctrl.meetingRooms track by $index">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ room.code }}</td>
+                        <td style="text-wrap: nowrap;">{{ room.title[$root.Language.current] }}</td>
+                        <td ng-repeat="day in room.events" style="vertical-align: top; min-width: 200px;">
+                          <div class="mb-1" ng-repeat="e in day" style="border-radius: 4px;background-color: rgba(88, 88, 32, 0.3);">
+                              <div class="p-2" style="overflow-y: auto;">
+                                <div class="">
+                                  <label class="input-group-text-new"
+                                    ><strong>{{'Title'|l}}:</strong></label
+                                  >
+                                  <span>{{ e.title }}</span>
+                                </div>
+                                
+                                <div class="">
+                                  <label class="input-group-text-new"
+                                    ><strong>{{'HostPerson'|l}}:</strong></label
+                                  >
+                                  <span><show-username-onlyname username="e.host" hide-image="true" /></span>
+                                </div>
+
+                                <div class="" style="text-wrap: nowrap;">
+                                  <label class="input-group-text-new"
+                                    ><strong>{{'Start'|l}}:</strong></label
+                                  >
+                                  <span>
+                                    {{e.startTime}}
+                                  </span>
+                                  <label class="input-group-text-new"
+                                    ><strong>{{'End'|l}}:</strong></label
+                                  >
+                                  <span>
+                                    {{e.endTime}}
+                                  </span>
+                                </div>
+
+                                <div class="">
+                                  <label class="input-group-text-new"
+                                    ><strong>{{'Department'|l}}:</strong></label
+                                  >
+                                  <span><show-department department="e.department"></show-department></span>
+                                </div>
+                              </div>
+                            <div class="dropdown-menu" aria-labelledby="{{e._id}}">
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

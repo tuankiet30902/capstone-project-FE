@@ -1,0 +1,193 @@
+<my-content>
+  <content-content >
+    <div
+      ng-controller="car_registration_details_controller as ctrlChild"
+      ng-class="{'card-body':!$root.detailsInfo.url}"
+    >
+      <div class="detail-registration-car">
+        <section class="pb-3">
+          <!-- Post data -->
+          <div class="text-center post-data">
+            <h2>
+              <a><strong>{{ctrlChild.Item.title}}</strong></a>
+            </h2>
+            <p class="grey-text">
+              {{'WrittenBy'|l}}
+              <a>
+                <show-username username="ctrlChild.Item.username">
+                </show-username> </a
+              >,
+              <time-show
+                time-show-data="(ctrlChild.Item.entity.his[0].created)"
+              ></time-show>
+            </p>
+          </div>
+        </section>
+
+        <section class="pb-3">
+          <div class="card">
+            <div class="card-body row" style="border-left: 2px solid #20a8d8;padding: 10px;">
+              <table class="col-md-12">
+                <tr>
+                  <td class="font-weight-bolder">
+                    {{'Title'|l}}
+                  </td>
+                  <td colspan="3">
+                    {{ctrlChild.Item.title}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bolder">
+                    {{'Starting place'|l}}
+                  </td>
+                  <td>
+                    <get-field-directory id-value="ctrlChild.Item.starting_place" extend="ctrlChild.location_config"
+                      localization="true"></get-field-directory>
+                  </td>
+                  <td class="font-weight-bolder">{{'Destination'|l}}</td>
+                  <td>{{ctrlChild.Item.destination}}</td>
+                </tr>
+  
+                <tr>
+                  <td class="font-weight-bolder">{{'Department'|l}}</td>
+                  <td><span ng-repeat="de in ctrlChild.Item.to_department_titles">{{de[$root.Language.current]}}. &nbsp;</span>
+                  </td>
+                  <td class="font-weight-bolder">{{'Number of people'|l}}</td>
+                  <td>{{ctrlChild.Item.number_of_people}}</td>
+                </tr>
+                <tr>
+  
+                  <td class="font-weight-bolder">{{'Passenger'|l}}</td>
+                  <td colspan="3">
+                    <span ng-repeat="item in ctrlChild.Item.passenger track by $index"
+                      ng-if="ctrlChild.Item.passenger.length>=4">
+                      <show-username username="item" hide-image="true" ng-if="$index<5">
+                      </show-username>&nbsp;&nbsp;
+                      <span ng-if="$index==5">,...</span>
+                    </span>
+                    <span ng-repeat="item in ctrlChild.Item.passenger track by $index"
+                      ng-if="ctrlChild.Item.passenger.length<4">
+                      <show-username username="item" hide-image="true">
+                      </show-username>&nbsp;&nbsp;
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+  
+                  <td class="font-weight-bolder">{{'Time to go'|l}}</td>
+                  <td><time-show time-show-data="ctrlChild.Item.time_to_go" time-show-type="long">
+                    </time-show></td>
+                  <td class="font-weight-bolder">{{'Pick up time'|l}}</td>
+                  <td><time-show time-show-data="ctrlChild.Item.pick_up_time" time-show-type="long">
+                    </time-show></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bolder">{{'Content'|l}}</td>
+                  <td colspan="3">{{ctrlChild.Item.content}}</td>
+                </tr>
+                <tr ng-if="ctrlChild.Item.showProtocal">
+                  <td class="font-weight-bolder">
+                    {{'Transportation allowance'|l}}
+                  </td>
+                  <td colspan="3">
+                    <div ng-if="ctrlChild.Item.assign_card">{{'Assign a credit card'|l}}</div>
+                    <div ng-if="!ctrlChild.Item.assign_card">{{'Assign a car'|l}}</div>
+                  </td>
+                </tr>
+                <tr ng-if="ctrlChild.Item.car" >
+                  <td class="font-weight-bolder">{{'Car'|l}}</td>
+                  <td colspan="3"><get-field-directory id-value="ctrlChild.Item.car" extend="ctrlChild.vehicle_list_config"
+                      localization="true"></get-field-directory></td>
+                </tr>
+                <tr ng-if="ctrlChild.Item.driver">
+                  <td class="font-weight-bolder">{{'Driver'|l}}</td>
+                  <td>
+                    <span>{{ctrlChild.Item.driver_detail.fullname}}</span>
+                  </td>
+                  <td class="font-weight-bolder">{{'PhoneNumber'|l}}
+                  <td>
+                    <span>{{ctrlChild.Item.driver_detail.phonenumber}}</span>
+                  </td>
+                </tr>
+                <tr ng-if="ctrlChild.Item.card" >
+                  <td class="font-weight-bolder">{{'CreditCard'|l}}</td>
+                  <td colspan="3"><get-field-directory id-value="ctrlChild.Item.card" extend="ctrlChild.card_list_config"
+                      localization="true"></get-field-directory></td>
+                </tr>
+  
+                <tr ng-if="ctrlChild.Item.money">
+                  <td class="font-weight-bolder">{{'AmountSpent'|l}}</td>
+                  <td class="font-weight-bolder">{{ ctrlChild.Item.money|currencyFormat:'VND' }}</td>
+                  <td class="font-weight-bolder">{{'Km'|l}}</td>
+                  <td>{{ ctrlChild.Item.number_km }}</td>
+                </tr>
+                <tr ng-if="ctrlChild.Item.invoices">
+                  <td class="font-weight-bolder">{{'Invoices'|l}}</td>
+                  <td colspan="3">
+                    <attachment-show ng-repeat="at in ctrlChild.Item.invoices" attachment-show-item="at"
+                      attachment-show-func="ctrlChild.loadfileInvoice(params)"
+                      attachment-show-params="{id:ctrlChild.Item._id, code:ctrlChild.Item.code, name:at.name}"
+                      attachment-show-service-name="'car_management'"></attachment-show>
+                  </td>
+                </tr>
+              </table>
+  
+  
+            </div>
+          </div>
+        </section>
+
+        <section class="pb-3" ng-show="ctrlChild.Item.attachments.length>0">
+          <p
+            class="note note-primary attachment"
+          >
+            <strong>{{"Attachment"|l}}:</strong>
+
+            <attachment-show
+              ng-repeat="at in ctrlChild.Item.attachments"
+              attachment-show-item="at"
+              attachment-show-func="ctrlChild.load_file_info(params)"
+              attachment-show-params="{id:ctrlChild.Item.code,name:at.name}"
+              attachment-show-service-name="'meeting_room'"
+            >
+            </attachment-show>
+          </p>
+        </section>
+      </div>
+
+      <div class="detail-registration-car comments-list text-center text-md-left">
+        <h4 class="text-center font-weight-bold mb-5 grey-text">
+          {{'Events'|l}}
+          <span class="badge pink">{{ctrlChild.Item.event.length}}</span>
+        </h4>
+
+        <!-- First row -->
+        <table class="table event-table">
+          <thead>
+            <tr>
+              <th style="text-align: center;">{{'Time'|l}}</th>
+              <th style="text-align: center">{{'PersonAction'|l}}</th>
+              <th style="text-align: center">{{'Action'|l}}</th>
+              <th style="text-align: center; max-width: 200px;">{{'Note'|l}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in ctrlChild.Item.event|orderBy:'time':-1">
+              <td class="hour" style="border: none; text-align: center;">
+                <span class="grey-text"
+                  ><i class="fa fa-clock" aria-hidden="true"></i>
+                  <time-show time-show-data="item.time"></time-show>
+                </span>
+              </td>
+              <td style="text-align: center;">
+                <show-username username="item.username"> </show-username>
+              </td>
+              <td style="text-align: center;">{{item.action|l}}</td>
+              <td style="text-align: justify; max-width: 200px;">{{item.note}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </content-content>
+</my-content>

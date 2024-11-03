@@ -1,0 +1,10 @@
+
+<span 
+class="btn btn-square " 
+ng-class="{'btn-secondary': buttonCheckboxModel,'btn-light':!buttonCheckboxModel}"
+ng-click="buttonCheckboxClick(!buttonCheckboxModel);$event.stopPropagation();"
+>
+    <i class="far fa-check-square" ng-show="buttonCheckboxModel"></i>
+    <i class="far fa-square" ng-show="!buttonCheckboxModel"></i>
+    {{buttonCheckboxLocalization? (buttonCheckboxLabel|l):buttonCheckboxLabel}}
+</span>

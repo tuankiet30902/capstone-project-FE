@@ -1,0 +1,48 @@
+<my-content class="notify-feature">
+  <content-content>
+    <div ng-controller="car_main_controller as ctrlMain">
+      <div class="card">
+        <div class="card-body">
+          <ul class="nav nav-tabs" role="tablist">
+            <li ng-if="ctrlMain.show_tab_car_registration" class="nav-item" ng-click="ctrlMain.switchTab('car_registration')">
+              <a class="nav-link" ng-class="{'active':ctrlMain.tab =='car_registration'}">
+                {{'CarRegistrationList'|l}}
+              </a>
+            </li>
+            <li class="nav-item" ng-click="ctrlMain.switchTab('car_calendar')">
+              <a class="nav-link" ng-class="{'active':ctrlMain.tab =='car_calendar'}">
+                {{'CarCalendar'|l}}
+              </a>
+            </li>
+            <li 
+              class="nav-item" ng-click="ctrlMain.switchTab('car_list')"
+              ng-if="(['Office.CarManagement.Confirm', 'Office.CarManagement.Approve']|checkRule)"
+            >
+              <a class="nav-link" ng-class="{'active':ctrlMain.tab =='car_list'}">{{'CarList'|l}}
+              </a>
+            </li>
+            <li 
+              class="nav-item" ng-click="ctrlMain.switchTab('location_list')"
+              ng-if="(['Office.CarManagement.Confirm', 'Office.CarManagement.Approve']|checkRule)"
+            >
+              <a class="nav-link" ng-class="{'active':ctrlMain.tab =='location_list'}">{{'Location List'|l}}
+              </a>
+            </li>
+            <li class="nav-item" 
+              ng-click="ctrlMain.switchTab('card_list')"
+              ng-if="(['Office.CarManagement.Confirm']|checkRule)"
+            >
+              <a class="nav-link" ng-class="{'active':ctrlMain.tab =='card_list'}">{{'CreditCard'|l}}
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade active show">
+              <div ng-include="ctrlMain._urlMain"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </content-content>
+</my-content>

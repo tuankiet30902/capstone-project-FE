@@ -1,0 +1,212 @@
+<my-content class="event-calendar-details-feature">
+    <content-content ng-class="{'card ':!$root.detailsInfo.url}">
+      <div
+        ng-controller="event_calendar_details_controller as ctrlChild"
+        ng-class="{'card-body':!$root.detailsInfo.url}"
+      >
+        <div>
+          <section class="pb-3">
+            <!-- Post data -->
+            <div class="text-center post-data">
+              <h2>
+                <a><strong>{{ctrlChild.Item.title}}</strong></a>
+              </h2>
+              <p class="grey-text">
+                {{'WrittenBy'|l}}
+                <a>
+                  <show-username username="ctrlChild.Item.username">
+                  </show-username> </a
+                >,
+                <time-show
+                  time-show-data="(ctrlChild.Item.entity.his[0].created)"
+                ></time-show>
+              </p>
+          </section>
+  
+          <section class="pb-3">
+            <div class="card">
+              <div class="card-body row" style="border-left: 2px solid #20a8d8">
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'Title'|l}}:</strong></label
+                  >
+                  <span>{{ ctrlChild.Item.title }}</span>
+                </div>
+
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'LevelEvent'|l}}:</strong></label
+                  >
+                  <span>{{ ctrlChild.Item.level|l }}</span>
+                </div>
+  
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'Start date'|l}}:</strong></label
+                  >
+                  <time-show
+                    time-show-type="long"
+                    time-show-data="ctrlChild.Item.start_date"
+                  >
+                  </time-show>
+                </div>
+  
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'End date'|l}}:</strong></label
+                  >
+                  <time-show
+                    time-show-type="long"
+                    time-show-data="ctrlChild.Item.end_date"
+                  >
+                  </time-show>
+                </div>
+  
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'Type'|l}}:</strong></label
+                  >
+                  <span>{{ ctrlChild.Item.type|l }}</span>
+                </div>
+  
+                <div class="form-group col-md-12 m-0">
+                  <label class="input-group-text-new"
+                    ><strong>{{'HostPerson'|l}}:</strong></label
+                  >
+                  <show-username-onlyname
+                    hide-image="true"
+                    username="ctrlChild.Item.main_person"
+                  ></show-username-onlyname>
+                </div>
+
+                <div class="form-group col-md-12 m-0" ng-if="ctrlChild.Item.meeting_link">
+                  <label class="input-group-text-new"
+                    ><strong>{{'MeetingLink'|l}}:</strong></label
+                  >
+                  <span>{{ ctrlChild.Item.meeting_link }}</span>
+                </div>
+  
+                <div class="form-group col-md-12" ng-if="ctrlChild.Item.participants.length > 0">
+                  <div class="d-flex flex-wrap justify-content-start align-items-center">
+                    <label class="input-group-text-new mb-0"
+                      ><strong>{{'Participant'|l}}:</strong></label
+                    >
+                    <span
+                      ng-repeat="n in ctrlChild.Item.participants"
+                      class="p-1 ml-2 mt-1"
+                      style="font-size: 0.7rem ;color: #3e4042;background-color: #dde2e4; border-radius: 5px; text-align: center; text-wrap: nowrap;"
+                    >
+                      <show-username-onlyname
+                        hide-image="true"
+                        username="n"
+                      ></show-username-onlyname>
+                    </span>
+                  </div>
+                </div>
+  
+                <div class="form-group col-md-12" ng-if="ctrlChild.Item.departments.length > 0">
+                  <div class="d-flex flex-wrap justify-content-start align-items-center">
+                    <label class="input-group-text-new mb-0"
+                      ><strong>{{'ParticipateDepartments'|l}}:</strong></label
+                    >
+                    <span
+                      ng-repeat="department in ctrlChild.Item.departments"
+                      class="p-1 ml-2 mt-1"
+                      style="font-size: 0.7rem ;color: #3e4042;background-color: #dde2e4; border-radius: 5px; text-align: center; text-wrap: nowrap;"
+                    >
+                      <show-department
+                        department="department"
+                      ></show-department>
+                    </span>
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+  
+            <div class="card">
+              <div class="card-body" style="border-left: 2px solid #20a8d8">
+                <div class="row">
+                  <div class="form-group col-md-12" ng-if="ctrlChild.Item.flow_status === 'Cancel'">
+                    <label class="input-group-text-new"
+                      ><strong>{{'CancellationReason'|l}}:</strong></label
+                    >
+                    <span>{{ ctrlChild.Item.reasonCancel }}</span>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="input-group-text-new"
+                      ><strong>{{'Content' | l}}</strong>:</label
+                    >
+                  </div>
+                  <div class="col-md-12">
+                    <div ng-bind-html="ctrlChild.Item.content"></div>
+                  </div>
+                  <div
+                    class="col-md-12"
+                    style="
+                      border-top: 1px solid #eee;
+                      margin-bottom: 15px;
+                      margin-top: 10px;
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </section>
+  
+          <section class="pb-3">
+            <p
+              class="note note-primary attachment"
+              ng-show="ctrlChild.Item.attachments.length>0"
+            >
+              <strong>{{"Attachment"|l}}:</strong>
+  
+              <attachment-show
+                ng-repeat="at in ctrlChild.Item.attachments"
+                attachment-show-item="at"
+                attachment-show-func="ctrlChild.load_file_info(params)"
+                attachment-show-params="{id:ctrlChild.Item._id,name:at.name}"
+                attachment-show-service-name="'meeting_room'"
+              >
+              </attachment-show>
+            </p>
+          </section>
+        </div>
+  
+        <div class="comments-list text-center text-md-left">
+          <h4 class="text-center font-weight-bold mb-5 grey-text">
+            {{'Events'|l}}
+            <span class="badge pink">{{ctrlChild.Item.event.length}}</span>
+          </h4>
+  
+          <!-- First row -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{'PersonAction'|l}}</th>
+                <th>{{'Action'|l}}</th>
+                <th>{{'Reason'|l}}</th>
+                <th style="text-align: end">{{'Time'|l}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in ctrlChild.Item.event|orderBy:'time':-1">
+                <td>
+                  <show-username username="item.username"> </show-username>
+                </td>
+                <td>{{item.action|l}}</td>
+                <td>{{item.reason}}</td>
+                <td class="hour float-right">
+                  <span class="grey-text float-right"
+                    ><i class="fa fa-clock" aria-hidden="true"></i>
+                    <time-show time-show-data="item.time"></time-show>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </content-content>
+  </my-content>
+  

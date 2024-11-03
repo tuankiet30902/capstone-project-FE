@@ -1,0 +1,5 @@
+<button modal-toggle="{{buttonEditItemModal}}" type="button" class="btn btn-outline-dark btn-sm"
+    ng-click="buttonEditClick();$event.stopPropagation();" ng-disabled="disabled">
+    <i class="fas" ng-class="{'fa-pencil-alt': buttonEditItemChangeIcon, 'fa-pen-square': !buttonEditItemChangeIcon}"></i>
+    <span ng-if="buttonLabel">{{buttonLabel | l}}</span>
+</button>

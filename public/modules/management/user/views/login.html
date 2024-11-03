@@ -1,0 +1,70 @@
+<div class="app flex-row align-items-center" id="login-page" ng-controller="user_login_controller as ctrl">
+  <img ng-src="{{ctrl.backgroundLogin.urlDisplay}}" style="
+  background-position:center;
+  background-repeat:no-repeat;
+  height: 100%;
+  width:100%;
+   position: absolute;
+   background-size:cover;opacity: 1;" />
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8" style="max-height: 700px;" ng-show="ctrl.accounts.length > 0">
+        <div class="card-group">
+          <div class="card p-4" style="box-shadow: 2px  #c20;">
+            <div class="card-body">
+              <h1 style="font-weight: 600;">{{'RecentlyLogged'|l}}</h1>
+              <p style="color: #929292; font-size: 14px;">{{'Click on your photo'|l}}</p>
+              <div class="account-container">
+                <div class="account-box" ng-repeat="account in ctrl.accounts">
+                  <div ng-mouseenter="showTooltip()" ng-mouseleave="hideTooltip()" ng-click="ctrl.switchAccount(account)">
+                    <div class="account-image">
+                      <img ng-src="{{account.imageUrl}}"/>
+                    </div>
+                    <p>{{account.title}}</p>
+                  </div>
+                  <div title="{{'Remove account from this site'|l}}">
+                    <button ng-click="ctrl.removeAccount(account)" class="close-btn">&times;</button>
+                  </div>
+                </div>
+              </div>        
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-group">
+          <div class="card p-4" style="box-shadow: 2px  #c20;">
+            <div class="card-body">
+              <form class="form-horizontal" name="loginForm" id="loginForm">
+                <div class="logo-login">
+                  <img ng-src="{{ctrl.logo.urlDisplay}}" />
+                </div>
+                <div class="form-group mb-3">
+                  <div class="input-prepend input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-user"></i></span></div>
+                    <input type="text" placeholder="Username" name="username_login" class="form-control" ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Login','login','doing')" ng-class="{ 'is-invalid': loginForm.username_login.$invalid }" ng-model="ctrl.username" id="username_login" required />
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <div class="input-prepend input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-lock"></i></span></div>
+                    <input type="password" placeholder="Password" name="password_login" class="form-control" ng-disabled="$root.statusValue.get(ctrl._ctrlName,'Login','login','doing')" ng-class="{ 'is-invalid': loginForm.password_login.$invalid }" ng-model="ctrl.password" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input-checkbox input-checkbox-label="{{'RememberMe'|l}}" input-checkbox-model="ctrl.remember" input-checkbox-disabled="$root.statusValue.get(ctrl._ctrlName,'Login','login','doing')"></input-checkbox>
+                </div>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-primary w-100" ng-enter="ctrl.login()" ng-click="ctrl.login()" ng-disabled="loginForm.$invalid || $root.statusValue.get(ctrl._ctrlName,'Login','login','doing')" type="button">{{'Login'|l}}</button>
+                </div>
+                <div class="red-text" ng-show="!$root.statusValue.get(ctrl._ctrlName,'Login','login','status')">
+                  {{$root.statusValue.get(ctrl._ctrlName,'Login','login','message')|l}}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
